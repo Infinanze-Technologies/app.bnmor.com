@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900');
+
+.super_container {
+//   width: 100%;
+  overflow: hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background-color: #fff;
+  color: #636b6f;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+  height: 100vh;
+  margin: 0;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+  .account-page .main-wrapper {
+    width: 100%;
+  }
+  .account-page .main-wrapper .account-content {
+    padding: 20px 0;
+  }
+  .account-page .main-wrapper .account-content .account-logo {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .account-page .main-wrapper .account-content .account-logo img {
+    width: 100px;
+  }
+  .account-page .main-wrapper .account-content .account-box {
+    background-color: #fff;
+    border: 1px solid #ededed;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    overflow: hidden;
+    width: 480px;
+    border-radius: 4px;
+  }
+  @media (max-width: 991px) {
+    .account-page .main-wrapper .account-content .account-box {
+      width: 100%;
+      margin: 0 0 20px;
+    }
+  }
+  .account-page .main-wrapper .account-content .account-box .form-group {
+    margin-bottom: 25px;
+  }
+  .account-page .main-wrapper .account-content .account-box label {
+    color: #282626;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  .account-page .main-wrapper .account-content .account-box .form-control {
+    background-color: #fbfbfb;
+    border: 1px solid #e3e3e3;
+    height: 46px;
+    border-radius: 4px;
+  }
+  .account-page .main-wrapper .account-content .account-box #toggle-password {
+    cursor: pointer;
+    margin-right: 1px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+  }
+  .account-page .main-wrapper .account-content .account-box .account-btn {
+    background: #ff9b44;
+    background: linear-gradient(to right, #4D4D4D 0%, #4347D9 100%);
+    border: 0;
+    display: block;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 4px;
+    padding: 10px 26px;
+  }
+  .account-page .main-wrapper .account-content .account-box .account-wrapper {
+    padding: 30px;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-footer {
+    text-align: center;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-title {
+    color:#3E3B3B !important;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-subtitle {
+    color: #888;
+    font-size: 13px;
+    text-align: center;
+    margin: 0 0 30px;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-box
+    .form-group {
+    margin: 0 0 25px;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-box
+    .form-group
+    label {
+    color: #282626 !important;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  .account-page
+    .main-wrapper
+    .account-content
+    .account-box
+    .account-wrapper
+    .account-box
+    .form-group
+    .form-control {
+    background-color: #fbfbfb;
+    border: 1px solid #e3e3e3;
+    height: 46px;
+    border-radius: 4px;
+  }
+  .account-page .main-wrapper .account-content .account-box .otp-wrap {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .account-page .main-wrapper .account-content .account-box .otp-wrap .otp-input {
+    background-color: #fff;
+    border: 1px solid #e3e3e3;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 500;
+    height: 70px;
+    line-height: 29px;
+    margin-right: 15px;
+    text-align: center;
+    width: 70px;
+    border-radius: 4px;
+  }
+  @media (max-width: 575px) {
+    .account-page
+      .main-wrapper
+      .account-content
+      .account-box
+      .otp-wrap
+      .otp-input {
+      height: 50px;
+      width: 52px;
+      margin: 10px;
+    }
+  }
+  .account-page .main-wrapper .account-content .account-box .lock-user {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .account-page .main-wrapper .account-content .account-box .lock-user img {
+    margin-bottom: 15px;
+    width: 100px;
+  }
+  .forgot-pass-text{
+    cursor:pointer;
+    font-size:15px;
+    font-family: 'Raleway', sans-serif;
+    color:#4F4C4C !important;
+    &:hover{
+      color:#FF7A5E !important;
+    }
+  }
+
+  .signIn-text{
+    display:flex;
+   justify-content:right;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:500;
+    font-family: 'Raleway', sans-serif;
+    color:#4F4C4C !important;
+    &:hover{
+      color:#FF7A5E !important;
+    }
+    .logText{
+      margin-left:5px;
+      &:hover{
+        color:#FF7A5E !important;
+      }
+    }
+   
+  }
+
+}

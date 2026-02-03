@@ -1,0 +1,19 @@
+[
+    {
+        "id" : 1,
+        "name":"Fully Furnished",
+        "is_active":true
+    },
+    {
+        "id" : 2,
+        "name":"Semi Furnished",
+        "is_active":true
+    },
+    {
+        "id" : 3,
+        "name":"Unfurnished",
+        "is_active":true
+    }
+    
+
+]

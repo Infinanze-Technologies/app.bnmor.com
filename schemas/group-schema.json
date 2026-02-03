@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Borrower Group Schema",
+  "description": "Schema for borrower group management",
+  "type": "object",
+  "properties": {
+    "group_id": {
+      "type": "string",
+      "description": "Unique identifier for the group",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the borrower group",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the group (optional)",
+      "maxLength": 1000
+    },
+    "group_type": {
+      "type": "string",
+      "description": "Type of borrower group",
+      "enum": ["Individual", "Joint", "Corporate", "Association", "Cooperative"],
+      "default": "Individual"
+    },
+    "max_members": {
+      "type": "integer",
+      "description": "Maximum number of members allowed in the group",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "min_members": {
+      "type": "integer",
+      "description": "Minimum number of members required in the group",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "group_leader_id": {
+      "type": "string",
+      "description": "Reference to the group leader/chairperson",
+      "format": "uuid"
+    },
+    "group_secretary_id": {
+      "type": "string",
+      "description": "Reference to the group secretary",
+      "format": "uuid"
+    },
+    "group_treasurer_id": {
+      "type": "string",
+      "description": "Reference to the group treasurer",
+      "format": "uuid"
+    },
+    "meeting_frequency": {
+      "type": "string",
+      "description": "Frequency of group meetings",
+      "enum": ["Weekly", "Bi-weekly", "Monthly", "Quarterly", "Annually"]
+    },
+    "meeting_day": {
+      "type": "string",
+      "description": "Day of the week for meetings",
+      "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    },
+    "meeting_time": {
+      "type": "string",
+      "description": "Time of day for meetings",
+      "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+    },
+    "meeting_venue": {
+      "type": "string",
+      "description": "Venue for group meetings",
+      "maxLength": 500
+    },
+    "savings_requirement": {
+      "type": "number",
+      "description": "Required monthly savings amount per member",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "loan_eligibility_months": {
+      "type": "integer",
+      "description": "Number of months a member must be in the group before being eligible for loans",
+      "minimum": 0,
+      "maximum": 60
+    },
+    "attendance_requirement": {
+      "type": "number",
+      "description": "Minimum attendance percentage required",
+      "minimum": 0,
+      "maximum": 100,
+      "multipleOf": 0.01
+    },
+    "branch_id": {
+      "type": "string",
+      "description": "Reference to the branch where the group is registered",
+      "format": "uuid"
+    },
+    "field_officer_id": {
+      "type": "string",
+      "description": "Reference to the field officer assigned to the group",
+      "format": "uuid"
+    },
+    "formation_date": {
+      "type": "string",
+      "description": "Date when the group was formed",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the group",
+      "enum": ["Active", "Inactive", "Suspended", "Dissolved"],
+      "default": "Active"
+    },
+    "total_members": {
+      "type": "integer",
+      "description": "Current number of members in the group",
+      "minimum": 0
+    },
+    "total_savings": {
+      "type": "number",
+      "description": "Total savings balance of the group",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "total_outstanding_loans": {
+      "type": "number",
+      "description": "Total outstanding loan amount for the group",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Timestamp when record was created",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "Timestamp when record was last updated",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "User ID who created the record",
+      "format": "uuid"
+    },
+    "updated_by": {
+      "type": "string",
+      "description": "User ID who last updated the record",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+} 

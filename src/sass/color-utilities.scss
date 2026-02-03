@@ -1,0 +1,408 @@
+/*
+================================================
+DASHBOARD COLOR UTILITIES
+================================================
+
+This file contains utility classes for consistent color usage
+across the dashboard application.
+
+Color Scheme:
+- Primary: #4D4D4D (Deep Purple) - Sidebar, navigation
+- Accent: #FF6F3C (Bright Orange) - Buttons, active states
+- Secondary: #00C2BA (Teal Blue) - Charts, info messages, hover effects
+
+*/
+
+// Import variables
+@import 'variables';
+
+// ================================================
+// BUTTON STYLES
+// ================================================
+
+// Primary buttons (Orange accent)
+.btn-primary {
+  background-color: $color-accent !important;
+  border-color: $color-accent !important;
+  color: #ffffff !important;
+  
+  &:hover {
+    background-color: $color-accent-dark !important;
+    border-color: $color-accent-dark !important;
+    color: #ffffff !important;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 111, 60, 0.25) !important;
+  }
+  
+  &:active {
+    background-color: $color-accent-dark !important;
+    border-color: $color-accent-dark !important;
+  }
+}
+
+// Secondary buttons (Teal blue)
+.btn-secondary {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: #ffffff !important;
+  
+  &:hover {
+    background-color: $color-secondary-dark !important;
+    border-color: $color-secondary-dark !important;
+    color: #ffffff !important;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 194, 186, 0.25) !important;
+  }
+  
+  &:active {
+    background-color: $color-secondary-dark !important;
+    border-color: $color-secondary-dark !important;
+  }
+}
+
+// Outline buttons
+.btn-outline-primary {
+  color: $color-accent !important;
+  border-color: $color-accent !important;
+  
+  &:hover {
+    background-color: $color-accent !important;
+    border-color: $color-accent !important;
+    color: #ffffff !important;
+  }
+}
+
+.btn-outline-secondary {
+  color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  
+  &:hover {
+    background-color: $color-secondary !important;
+    border-color: $color-secondary !important;
+    color: #ffffff !important;
+  }
+}
+
+// ================================================
+// BACKGROUND COLORS
+// ================================================
+
+.bg-primary {
+  background-color: $color-primary !important;
+  color: #ffffff !important;
+}
+
+.bg-accent {
+  background-color: $color-accent !important;
+  color: #ffffff !important;
+}
+
+.bg-secondary {
+  background-color: $color-secondary !important;
+  color: #ffffff !important;
+}
+
+// Light backgrounds
+.bg-primary-light {
+  background-color: $color-primary-light !important;
+  color: #ffffff !important;
+}
+
+.bg-accent-light {
+  background-color: $color-accent-light !important;
+  color: #ffffff !important;
+}
+
+.bg-secondary-light {
+  background-color: $color-secondary-light !important;
+  color: #ffffff !important;
+}
+
+// ================================================
+// TEXT COLORS
+// ================================================
+
+.text-primary {
+  color: $color-primary !important;
+}
+
+.text-accent {
+  color: $color-accent !important;
+}
+
+.text-secondary {
+  color: $color-secondary !important;
+}
+
+// ================================================
+// BORDER COLORS
+// ================================================
+
+.border-primary {
+  border-color: $color-primary !important;
+}
+
+.border-accent {
+  border-color: $color-accent !important;
+}
+
+.border-secondary {
+  border-color: $color-secondary !important;
+}
+
+// ================================================
+// CARD STYLES
+// ================================================
+
+.card-primary {
+  border-left: 4px solid $color-primary !important;
+  
+  .card-header {
+    background-color: rgba(94, 46, 145, 0.1) !important;
+    border-bottom: 1px solid rgba(94, 46, 145, 0.2) !important;
+  }
+}
+
+.card-accent {
+  border-left: 4px solid $color-accent !important;
+  
+  .card-header {
+    background-color: rgba(255, 111, 60, 0.1) !important;
+    border-bottom: 1px solid rgba(255, 111, 60, 0.2) !important;
+  }
+}
+
+.card-secondary {
+  border-left: 4px solid $color-secondary !important;
+  
+  .card-header {
+    background-color: rgba(0, 194, 186, 0.1) !important;
+    border-bottom: 1px solid rgba(0, 194, 186, 0.2) !important;
+  }
+}
+
+// ================================================
+// ALERT STYLES
+// ================================================
+
+.alert-primary {
+  background-color: rgba(94, 46, 145, 0.1) !important;
+  border-color: rgba(94, 46, 145, 0.2) !important;
+  color: $color-primary !important;
+}
+
+.alert-accent {
+  background-color: rgba(255, 111, 60, 0.1) !important;
+  border-color: rgba(255, 111, 60, 0.2) !important;
+  color: $color-accent !important;
+}
+
+.alert-secondary {
+  background-color: rgba(0, 194, 186, 0.1) !important;
+  border-color: rgba(0, 194, 186, 0.2) !important;
+  color: $color-secondary !important;
+}
+
+// ================================================
+// PROGRESS BARS
+// ================================================
+
+.progress-primary {
+  .progress-bar {
+    background-color: $color-primary !important;
+  }
+}
+
+.progress-accent {
+  .progress-bar {
+    background-color: $color-accent !important;
+  }
+}
+
+.progress-secondary {
+  .progress-bar {
+    background-color: $color-secondary !important;
+  }
+}
+
+// ================================================
+// BADGES
+// ================================================
+
+.badge-primary {
+  background-color: $color-primary !important;
+  color: #ffffff !important;
+}
+
+.badge-accent {
+  background-color: $color-accent !important;
+  color: #ffffff !important;
+}
+
+.badge-secondary {
+  background-color: $color-secondary !important;
+  color: #ffffff !important;
+}
+
+// ================================================
+// HOVER EFFECTS
+// ================================================
+
+.hover-primary:hover {
+  color: $color-primary !important;
+  background-color: rgba(94, 46, 145, 0.1) !important;
+}
+
+.hover-accent:hover {
+  color: $color-accent !important;
+  background-color: rgba(255, 111, 60, 0.1) !important;
+}
+
+.hover-secondary:hover {
+  color: $color-secondary !important;
+  background-color: rgba(0, 194, 186, 0.1) !important;
+}
+
+// ================================================
+// FOCUS STATES
+// ================================================
+
+.focus-primary:focus {
+  border-color: $color-primary !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 46, 145, 0.25) !important;
+}
+
+.focus-accent:focus {
+  border-color: $color-accent !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 111, 60, 0.25) !important;
+}
+
+.focus-secondary:focus {
+  border-color: $color-secondary !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 194, 186, 0.25) !important;
+}
+
+// ================================================
+// CHART COLORS (for Chart.js and other charting libraries)
+// ================================================
+
+.chart-primary {
+  --chart-color: #{$color-primary};
+}
+
+.chart-accent {
+  --chart-color: #{$color-accent};
+}
+
+.chart-secondary {
+  --chart-color: #{$color-secondary};
+}
+
+// ================================================
+// NAVIGATION ACTIVE STATES
+// ================================================
+
+.nav-link.active {
+  color: $color-accent !important;
+  background-color: rgba(255, 111, 60, 0.1) !important;
+  border-bottom: 2px solid $color-accent !important;
+}
+
+.nav-pills .nav-link.active {
+  background-color: $color-accent !important;
+  color: #ffffff !important;
+}
+
+// ================================================
+// TABLE STYLES
+// ================================================
+
+.table-primary {
+  thead th {
+    background-color: $color-primary !important;
+    color: #ffffff !important;
+    border-color: $color-primary !important;
+  }
+}
+
+.table-accent {
+  thead th {
+    background-color: $color-accent !important;
+    color: #ffffff !important;
+    border-color: $color-accent !important;
+  }
+}
+
+.table-secondary {
+  thead th {
+    background-color: $color-secondary !important;
+    color: #ffffff !important;
+    border-color: $color-secondary !important;
+  }
+}
+
+// ================================================
+// FORM STYLES
+// ================================================
+
+.form-control:focus {
+  border-color: $color-primary !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 46, 145, 0.25) !important;
+}
+
+.form-check-input:checked {
+  background-color: $color-accent !important;
+  border-color: $color-accent !important;
+}
+
+// ================================================
+// UTILITY CLASSES
+// ================================================
+
+// Spacing utilities with color context
+.p-primary {
+  padding: 1rem;
+  background-color: rgba(94, 46, 145, 0.05);
+  border-left: 3px solid $color-primary;
+}
+
+.p-accent {
+  padding: 1rem;
+  background-color: rgba(255, 111, 60, 0.05);
+  border-left: 3px solid $color-accent;
+}
+
+.p-secondary {
+  padding: 1rem;
+  background-color: rgba(0, 194, 186, 0.05);
+  border-left: 3px solid $color-secondary;
+}
+
+// Status indicators
+.status-primary {
+  color: $color-primary;
+  &::before {
+    content: "●";
+    margin-right: 0.5rem;
+  }
+}
+
+.status-accent {
+  color: $color-accent;
+  &::before {
+    content: "●";
+    margin-right: 0.5rem;
+  }
+}
+
+.status-secondary {
+  color: $color-secondary;
+  &::before {
+    content: "●";
+    margin-right: 0.5rem;
+  }
+}

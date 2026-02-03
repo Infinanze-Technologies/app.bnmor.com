@@ -1,0 +1,97 @@
+
+[
+    {
+        "id" : 1,
+        "name":"Luxury hotels",
+        "despt": "These are high-end hotels with luxurious amenities such as fine dining restaurants, spas, and fitness centers. They often have a high price tag but offer a high level of service and comfort.",
+        "count":"300",
+        "is_active":true,
+        "image":"/images/hero/one.jpeg"
+
+    },
+    {
+        "id" :2,
+        "name":"Boutique hotels",
+        "despt":"These are small, independent hotels that often have a unique and stylish design. They may offer personalized service and a more intimate atmosphere than larger hotels.",
+        "count":"350",
+        "is_active":true,
+        "image":"/images/hero/two.webp"
+    },
+    {
+        "id" : 3,
+        "name":"Business hotels",
+        "despt":"These hotels are designed for business travelers and often have amenities such as meeting rooms and business centers.",
+        "count":"450",
+        "is_active":true,
+        "image":"/images/hero/three.jpeg"
+    },
+    {
+        "id" : 4,
+        "name":"Resort hotels",
+        "despt":"These hotels are located in a vacation destination and often have a variety of amenities such as pools, golf courses, and activities for guests.",
+        "count":"500",
+        "is_active":true,
+        "image":"/images/hero/four.jpeg"
+    },
+    {
+        "id" : 5,
+        "name":"Airport hotels",
+        "despt":"These are hotels that are located near an airport and are convenient for travelers who need to stay overnight before or after a flight.",
+        "count":"222",
+        "is_active":true,
+        "image":"/images/hero/five.jpeg"
+    },
+    {
+        "id" : 6,
+        "name":"Extended stay hotels",
+        "despt":"These are hotels that offer longer-term stays and typically have amenities like kitchens in the rooms.",
+        "count":"332",
+        "is_active":true,
+        "image":"/images/hero/six.jpeg"
+    },
+    {
+        "id" : 7,
+        "name":"Budget hotels",
+        "despt":"These hotels offer basic accommodations at a lower price point. They may not have as many amenities as luxury hotels, but they are a good option for travelers looking for a more affordable place to stay.",
+        "count":"321",
+        "is_active":true,
+        "image":"/images/hero/seven.jpeg"
+    },
+    {
+        "id" : 8,
+        "name":"Bed and breakfast",
+        "despt":"These are small, privately-owned hotels that offer overnight accommodations and a breakfast meal.",
+        "count":"365",
+        "is_active":true,
+        "image":"/images/hero/three.jpeg"
+    },
+    {
+        "id" : 9,
+        "name":"All-inclusive resorts",
+        "despt":"These are resorts that include meals, drinks, and activities in the price of the room.",
+        "count":"129",
+        "is_active":true,
+        "image":"/images/hero/one.jpeg"
+    },
+    {
+        "id" : 10,
+        "name":"Family-friendly hotels",
+        "despt":"These hotels cater to families with children and often have amenities such as pools, kids' clubs, and play areas.",
+        "count":"129",
+        "is_active":true,
+        "image":"/images/hero/five.jpeg"
+    },
+    {
+        "id" : 11,
+        "name":"Pet-friendly hotels",
+        "despt":"These hotels allow guests to bring their pets with them and often have amenities such as pet-friendly rooms and outdoor areas for pets to play.",
+        "count":"129",
+        "is_active":true,
+        "image":"/images/hero/two.webp"
+    }
+ 
+ 
+
+
+
+]

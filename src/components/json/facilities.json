@@ -1,0 +1,54 @@
+[
+    {
+        "id" : 1,
+        "name":"Parking",
+        "is_active":true
+    },
+    {
+        "id" : 2,
+        "name":"Restaurant",
+        "is_active":true
+    },
+    {
+        "id" : 3,
+        "name":"Pet friendly",
+        "is_active":true
+    },
+    {
+        "id" : 4,
+        "name":"Room service",
+        "is_active":true
+    },
+    {
+        "id" : 5,
+        "name":"24-hour front desk",
+        "is_active":true
+    },
+    {
+        "id" : 6,
+        "name":"Fitness center",
+        "is_active":true
+    },
+    {
+        "id" : 7,
+        "name":"Family rooms",
+        "is_active":true
+    },
+    {
+        "id" : 8,
+        "name":"Free WiFi",
+        "is_active":true
+    },
+    {
+        "id" : 9,
+        "name":"Swimming pool",
+        "is_active":true
+    },
+    {
+        "id" : 10,
+        "name":"Airport shuttle",
+        "is_active":true
+}
+    
+
+]

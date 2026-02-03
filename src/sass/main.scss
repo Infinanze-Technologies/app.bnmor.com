@@ -1,0 +1,28 @@
+// THIS IS THE MAIN SASS FILE 
+// Google Font Nunito
+// @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800&display=swap');
+// Google Montserrat Font
+// @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// @import "~bootstrap/scss/bootstrap";
+// @import '~antd/dist/antd.css';
+
+// @import "@fullcalendar/common/main.css";
+// @import "@fullcalendar/daygrid/main.css";
+// @import "@fullcalendar/timegrid/main.css";
+
+
+// IMPORT @/pages _app.js
+// IMPORT ALL PARTIALS HERE
+@import 'variables';
+@import 'color-utilities';
+@import 'custom_ant';
+@import 'style';
+@import 'sidebar';
+@import 'table';
+@import 'custom_template';
+@import 'auth/login';
+// @import 'posSearchBar';
+
+// PAGES
+// @import 'pages/auth/login';

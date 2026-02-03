@@ -1,0 +1,32 @@
+[
+    {
+        "id" : 1,
+        "name": "Ghanaian Cedi",
+        "symbol" : "¢",
+        "code" : "GHS",
+        "is_active" : true
+    },
+    {
+        "id" : 2,
+        "name": "Euro",
+        "symbol" : "€",
+        "code" : "EUR",
+        "is_active" : true
+    },
+    {
+        "id" : 3,
+        "name": "United State Dollar",
+        "symbol" : "$",
+        "code" : "USD",
+        "is_active" : true
+    },
+    {
+        "id" : 4,
+        "name": "Pound Sterling",
+        "symbol" : "£",
+        "code" : "GBP",
+        "is_active" : true
+    }
+    
+
+]

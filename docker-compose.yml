@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    # image: openai-demo-app
+    build:
+      context: ./
+      # target: dev
+      dockerfile: Dockerfile
+    volumes:
+        - ./:/usr/src/app
+        - /usr/src/app/node_modules
+        - /usr/src/app/.next
+    ports:
+      - "3000:3000"

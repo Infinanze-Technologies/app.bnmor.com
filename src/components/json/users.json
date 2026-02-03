@@ -1,0 +1,51 @@
+[
+    {
+        "id":1,
+      "first_name": "Edward",
+      "last_name": "Nagai",
+      "email": "adjalokoedward@gmail.com",
+      "contact_no": "0245990165",
+      "address": "Oyarifa",
+      "admin_status":true
+      
+    },
+    {
+        "id":2,
+        "first_name": "Francis",
+        "last_name": "Teye",
+        "email": "fteye@gmail.com",
+        "contact_no": "0245990168",
+        "address": "Adenta",
+        "admin_status":true
+    },
+    {
+        "id":3,
+        "first_name": "Saviour",
+        "last_name": "Owusu",
+        "email": "saviour@gmail.com",
+        "contact_no": "0245990169",
+        "address": "Tema",
+        "admin_status":true
+    },
+    {
+        "id":4,
+        "first_name": "Frank",
+        "last_name": "Ashanti",
+        "email": "frank@gmail.com",
+        "contact_no": "0245990005",
+        "address": "Teshie",
+        "admin_status":true
+    },
+    {
+        "id":4,
+        "first_name": "Isaac",
+        "last_name": "Oppong",
+        "email": "isaac@gmail.com",
+        "contact_no": "0245990077",
+        "address": "Nungua",
+        "admin_status":true
+    }
+  
+  
+    
+  ]

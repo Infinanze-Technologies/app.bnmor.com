@@ -1,0 +1,48 @@
+/*
+
+================================================
+VARIABLES  HERE
+
+**
+---> COLORS VARIABLES HERE.
+
+---> FONT FAMILIES 
+
+---> UTILITY VARIABLES 
+
+================================================
+
+
+*/
+
+// Font Families
+$Nunito-font: 'Nunito', sans-serif;
+
+
+// COLORS VARIABLES HERE
+// Dashboard Color Scheme
+$color-primary: #4D4D4D; // Deep Purple - Primary color for sidebar, navigation
+$color-accent: #FF6F3C; // Bright Orange - Accent color for buttons, active states
+$color-secondary: #00C2BA; // Teal Blue - Secondary color for charts, info messages
+
+// Legacy colors (keeping for backward compatibility)
+$blue-violet: #323a45;
+$secondary-color: #bfd0ff;
+$bg-white: #fff;
+$aqua-gray: #AFCFEBE2;
+$dark-gray: #707070;
+$color-black: #000;
+$login-bg-color: #F6F6F6;
+$light-gray-color: #E4E9F3CE;
+$bg-gray : #EEF1F7;
+$dark-gray-1: #2B2B2BD6;
+
+// Color variations for different states
+$color-primary-light: lighten($color-primary, 10%);
+$color-primary-dark: darken($color-primary, 10%);
+$color-accent-light: lighten($color-accent, 10%);
+$color-accent-dark: darken($color-accent, 10%);
+$color-secondary-light: lighten($color-secondary, 10%);
+$color-secondary-dark: darken($color-secondary, 10%);
+
+

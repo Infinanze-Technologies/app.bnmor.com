@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Guarantor Schema",
+  "description": "Schema for guarantor registration and management",
+  "type": "object",
+  "properties": {
+    "guarantor_id": {
+      "type": "string",
+      "description": "Unique identifier for the guarantor",
+      "format": "uuid"
+    },
+    "fullname": {
+      "type": "string",
+      "description": "Full name of the guarantor",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "date_of_birth": {
+      "type": "string",
+      "description": "Date of birth in YYYY-MM-DD format",
+      "format": "date"
+    },
+    "gender": {
+      "type": "string",
+      "description": "Gender of the guarantor",
+      "enum": ["Male", "Female", "Other"]
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "Phone number of the guarantor",
+      "pattern": "^\\d{7,15}$"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address of the guarantor",
+      "format": "email",
+      "maxLength": 255
+    },
+    "city": {
+      "type": "string",
+      "description": "City or town of residence",
+      "maxLength": 100
+    },
+    "residential_address": {
+      "type": "string",
+      "description": "Residential address of the guarantor",
+      "maxLength": 500
+    },
+    "relationship_type": {
+      "type": "string",
+      "description": "Type of relationship to the borrower",
+      "enum": ["Friend", "Family", "Colleague", "Other"]
+    },
+    "relationship_duration": {
+      "type": "string",
+      "description": "How long they have known the borrower",
+      "maxLength": 100
+    },
+    "employment_status": {
+      "type": "string",
+      "description": "Employment status of the guarantor",
+      "enum": ["Employed", "Self-employed", "Unemployed"]
+    },
+    "monthly_income": {
+      "type": "number",
+      "description": "Monthly income amount",
+      "minimum": 1,
+      "maximum": 360
+    },
+    "id_type": {
+      "type": "string",
+      "description": "Type of identification document",
+      "enum": ["National ID", "Driver's License", "Passport", "Voter's Card"]
+    },
+    "id_number": {
+      "type": "string",
+      "description": "Identification document number",
+      "maxLength": 100
+    },
+    "identification_cards": {
+      "type": "array",
+      "description": "Base64 encoded images of ID front and back",
+      "items": {
+        "type": "string",
+        "description": "Base64 encoded image data"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "profile_image": {
+      "type": "string",
+      "description": "Base64 encoded passport photo",
+      "nullable": true
+    },
+    "signature": {
+      "type": "string",
+      "description": "Base64 encoded signature image",
+      "nullable": true
+    },
+    "consent_date": {
+      "type": "string",
+      "description": "Date when consent was given in YYYY-MM-DD format",
+      "format": "date"
+    },
+    "borrower_id": {
+      "type": "string",
+      "description": "Reference to the borrower being guaranteed",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the guarantor",
+      "enum": ["Active", "Inactive", "Withdrawn", "Rejected"],
+      "default": "Active"
+    },
+    "guarantee_amount": {
+      "type": "number",
+      "description": "Maximum amount the guarantor is willing to guarantee",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "guarantee_percentage": {
+      "type": "number",
+      "description": "Percentage of loan amount guaranteed",
+      "minimum": 0,
+      "maximum": 100,
+      "multipleOf": 0.01
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Timestamp when record was created",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "Timestamp when record was last updated",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "User ID who created the record",
+      "format": "uuid"
+    },
+    "updated_by": {
+      "type": "string",
+      "description": "User ID who last updated the record",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "fullname",
+    "date_of_birth",
+    "gender",
+    "phone_number",
+    "email",
+    "city",
+    "residential_address",
+    "relationship_type",
+    "relationship_duration",
+    "employment_status",
+    "monthly_income",
+    "id_type",
+    "id_number",
+    "identification_cards",
+    "profile_image",
+    "consent_date"
+  ],
+  "additionalProperties": false
+} 

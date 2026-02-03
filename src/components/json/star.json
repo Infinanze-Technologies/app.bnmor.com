@@ -1,0 +1,39 @@
+[
+    {
+        "id" : 1,
+        "name":"1 Star",
+        "is_active":true
+    },
+    {
+        "id" : 2,
+        "name":"2 Star",
+        "is_active":true
+    },
+    {
+        "id" : 3,
+        "name":"3 Star",
+        "is_active":true
+    },
+    {
+        "id" : 4,
+        "name":"4 Star",
+        "is_active":true
+    },
+    {
+        "id" : 5,
+        "name":"5 Star",
+        "is_active":true
+    },
+    {
+        "id" : 6,
+        "name":"6 Star",
+        "is_active":true
+    },
+    {
+        "id" : 7,
+        "name":"7 Star",
+        "is_active":true
+    }
+    
+
+]

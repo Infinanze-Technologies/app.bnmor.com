@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Borrower Schema",
+  "description": "Schema for borrower registration and management",
+  "type": "object",
+  "properties": {
+    "borrower_id": {
+      "type": "string",
+      "description": "Unique identifier for the borrower",
+      "format": "uuid"
+    },
+    "fullname": {
+      "type": "string",
+      "description": "Full name of the borrower",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address of the borrower",
+      "format": "email",
+      "maxLength": 255
+    },
+    "primary_phone": {
+      "type": "string",
+      "description": "Primary phone number",
+      "pattern": "^\\d{7,15}$"
+    },
+    "secondary_phone": {
+      "type": "string",
+      "description": "Secondary phone number (optional)",
+      "pattern": "^\\d{7,15}$"
+    },
+    "gender": {
+      "type": "string",
+      "description": "Gender of the borrower",
+      "enum": ["Male", "Female", "Other"]
+    },
+    "date_of_birth": {
+      "type": "string",
+      "description": "Date of birth in YYYY-MM-DD format",
+      "format": "date"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nationality of the borrower",
+      "maxLength": 100
+    },
+    "marital_status": {
+      "type": "string",
+      "description": "Marital status of the borrower",
+      "enum": ["Single", "Married", "Divorced", "Widowed"]
+    },
+    "occupation": {
+      "type": "string",
+      "description": "Occupation of the borrower",
+      "maxLength": 255
+    },
+    "employment_status": {
+      "type": "string",
+      "description": "Employment status of the borrower",
+      "enum": ["Employed", "Self-employed", "Unemployed"]
+    },
+    "monthly_income": {
+      "type": "number",
+      "description": "Monthly income amount",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "proof_of_identification": {
+      "type": "string",
+      "description": "Type of identification document",
+      "enum": ["National ID", "Driver's License", "Passport", "Voter's Card"]
+    },
+    "identification_number": {
+      "type": "string",
+      "description": "Identification document number",
+      "maxLength": 100
+    },
+    "identification_cards": {
+      "type": "array",
+      "description": "Base64 encoded images of ID front and back",
+      "items": {
+        "type": "string",
+        "description": "Base64 encoded image data"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address",
+      "maxLength": 500
+    },
+    "city": {
+      "type": "string",
+      "description": "City name",
+      "maxLength": 100
+    },
+    "state": {
+      "type": "string",
+      "description": "State or province",
+      "maxLength": 100
+    },
+    "zipcode": {
+      "type": "string",
+      "description": "Zip or postal code",
+      "pattern": "^\\d{4,10}$"
+    },
+    "profile_image": {
+      "type": "string",
+      "description": "Base64 encoded profile image",
+      "nullable": true
+    },
+    "branch": {
+      "type": "string",
+      "description": "Branch where borrower is registered",
+      "maxLength": 100
+    },
+    "date_of_registration": {
+      "type": "string",
+      "description": "Date of registration in YYYY-MM-DD format",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the borrower",
+      "enum": ["Active", "Inactive", "Suspended", "Blacklisted"],
+      "default": "Active"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Timestamp when record was created",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "Timestamp when record was last updated",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "User ID who created the record",
+      "format": "uuid"
+    },
+    "updated_by": {
+      "type": "string",
+      "description": "User ID who last updated the record",
+      "format": "uuid"
+    }
+  },
+  "required": [
+    "fullname",
+    "email",
+    "primary_phone",
+    "gender",
+    "date_of_birth",
+    "nationality",
+    "marital_status",
+    "occupation",
+    "employment_status",
+    "monthly_income",
+    "proof_of_identification",
+    "identification_number",
+    "identification_cards",
+    "address",
+    "city",
+    "state",
+    "zipcode",
+    "profile_image",
+    "branch",
+    "date_of_registration"
+  ],
+  "additionalProperties": false
+} 
