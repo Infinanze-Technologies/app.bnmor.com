@@ -32,8 +32,10 @@ const nextConfig = {
     '@ant-design/icons': {
       transform: '@ant-design/icons/es/icons/{{ member }}',
     },
+    // Use CommonJS bundles so Node SSR / static analysis does not choke on bare
+    // subpath imports (e.g. antd/es/modal/confirm) under strict ESM resolution (Node 20+).
     'antd': {
-      transform: 'antd/es/{{ member }}',
+      transform: 'antd/lib/{{ member }}',
       skipDefaultConversion: true
     },
   },
