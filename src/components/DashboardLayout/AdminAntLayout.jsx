@@ -366,6 +366,7 @@ export default function AdminAntLayout({
     baseItems.push(
       getItem('BuildOps', 'construction-management', <BuildOutlined />, [
         getItem('Categories', 'construction-categories'),
+        getItem('Entities', 'construction-entities'),
         getItem('Properties', 'construction-properties'),
       ])
     );
@@ -502,6 +503,9 @@ export default function AdminAntLayout({
         break;
       case 'construction-properties':
         router.push('/dashboard/constructions/properties');
+        break;
+      case 'construction-entities':
+        router.push('/dashboard/constructions/entities');
         break;
       case 'visitor-entries':
         router.push('/dashboard/man_visitors/entries');

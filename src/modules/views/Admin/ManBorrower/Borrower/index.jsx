@@ -3,9 +3,8 @@ import  { useState } from 'react'
 import ModalComponent from "@/components/ModalComponent";
 import {Button } from 'antd'
 import AddBorrower from './conponents/AddBorrower';
-import {URL_GET_BORROWER,URL_GET_MEMBER_TYPES, URL_GET_Qry_BRANCH } from "@/config/api-paths";
+import { URL_GET_BORROWER, URL_GET_MEMBER_TYPES, URL_GET_Qry_BRANCH, URL_GET_MEMBER_TYPES_BORROWER } from "@/config/api-paths";
 import BorrowerTable from './conponents/BorrowerTable';
-import { URL_GET_MEMBER_TYPES_BORROWER } from "@/config/api-paths";
 import usePaginateQuery from '@/hooks/ReactQuery/usePagination';
 import useGetEntity from '@/hooks/useGetEntity';
 import UsersData from "@/components/json/users.json"

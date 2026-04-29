@@ -18,7 +18,16 @@ import {
 } from "antd";
 import ImgCrop from "antd-img-crop";
 import { postRequest, updateRequest } from "@/hooks/apiService";
-import { URL_UPDATE_PROPERTIES, URL_GET_PROPERTY_CATEGORIES, URL_GET_CATEGORY_ATTRIBUTES } from "@/config/api-paths";
+import {
+  URL_UPDATE_PROPERTIES,
+  URL_GET_PROPERTY_CATEGORIES,
+  URL_GET_CATEGORY_ATTRIBUTES,
+  URL_GET_PROPERTY_ENTITIES,
+  URL_GET_PROPERTY_REGIONS,
+  URL_GET_PROPERTY_DISTRICTS,
+  URL_GET_PROPERTY_AREAS,
+  URL_ADD_LOCATIONS_AREAS,
+} from "@/config/api-paths";
 import useHandleResponse from "@/hooks/useHandleResponse";
 import useSelectQuery from "@/hooks/ReactQuery/useSelectQuery";
 import RichTextEditor from '@/components/form/RichTextEditor';
@@ -41,11 +50,15 @@ new Promise((resolve, reject) => {
 const EditProperty = (props) => {
   let { record, setIsModalVisible, refetch, jwt, forceRefetch } = props;
   const [form] = Form.useForm();
+  const watchedRegionId = Form.useWatch("region_id", form);
+  const watchedDistrictId = Form.useWatch("district_id", form);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [amenities, setAmenities] = useState([]);
+  const [areaSearch, setAreaSearch] = useState("");
+  const [addingArea, setAddingArea] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -66,6 +79,38 @@ const EditProperty = (props) => {
     tableKey: "CategoryAttributes",
     filter: ''
   });
+
+  const PropertyEntitiesObject = useSelectQuery({
+    url: URL_GET_PROPERTY_ENTITIES,
+    jwt: jwt,
+    tableKey: "EditPropertyEntities",
+    filter: '',
+  });
+
+  const PropertyRegionsObject = useSelectQuery({
+    url: URL_GET_PROPERTY_REGIONS,
+    jwt: jwt,
+    tableKey: "EditPropertyRegions",
+    filter: '',
+  });
+
+  const PropertyDistrictsObject = useSelectQuery({
+    url: watchedRegionId ? `${URL_GET_PROPERTY_DISTRICTS}/${watchedRegionId}` : null,
+    jwt: jwt,
+    tableKey: "EditPropertyDistricts",
+    filter: '',
+  });
+
+  const PropertyAreasObject = useSelectQuery({
+    url: watchedDistrictId ? `${URL_GET_PROPERTY_AREAS}/${watchedDistrictId}` : null,
+    jwt: jwt,
+    tableKey: "EditPropertyAreas",
+    filter: '',
+  });
+
+  useEffect(() => {
+    setAreaSearch("");
+  }, [watchedDistrictId]);
 
   // Update subcategories and statuses when category attributes are loaded
   useEffect(() => {
@@ -90,19 +135,77 @@ const EditProperty = (props) => {
   }, [selectedCategory, form]);
 
   const categoryOptions = CategoriesDataObject?.data || [];
+  const entityOptions = PropertyEntitiesObject?.data || [];
+  const regionOptions = PropertyRegionsObject?.data || [];
+  const districtOptions = PropertyDistrictsObject?.data || [];
+  const areaOptions = PropertyAreasObject?.data || [];
+
+  const areaNameExistsExactly = (nameToCheck) => {
+    const t = String(nameToCheck ?? "").trim().toLowerCase();
+    if (!t) return false;
+    return areaOptions.some(
+      (a) => String(a.name ?? "").trim().toLowerCase() === t
+    );
+  };
+
+  const trimmedAreaSearch = areaSearch.trim();
+  const showCreateAreaChip =
+    !!watchedDistrictId &&
+    !!selectedCategory &&
+    trimmedAreaSearch.length > 0 &&
+    !areaNameExistsExactly(trimmedAreaSearch) &&
+    !addingArea &&
+    !PropertyAreasObject?.isFetching;
+
+  const handleCreateAreaFromSearch = async () => {
+    const name = trimmedAreaSearch;
+    if (!name || !watchedDistrictId || !jwt) return;
+    if (areaNameExistsExactly(name)) return;
+    setAddingArea(true);
+    try {
+      const res = await postRequest(
+        URL_ADD_LOCATIONS_AREAS,
+        { district_id: watchedDistrictId, name },
+        jwt
+      );
+      handleRequestResponse(res);
+      const payload = res?.data?.data;
+      const rawId =
+        payload?.id != null ? payload.id : payload?.area_id ?? res?.data?.id;
+      const newId =
+        rawId !== undefined && rawId !== null ? Number(rawId) : undefined;
+      await PropertyAreasObject.forceRefetch?.();
+      if (newId !== undefined && !Number.isNaN(newId)) {
+        form.setFieldsValue({ area_id: newId });
+      }
+      setAreaSearch("");
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      setAddingArea(false);
+    }
+  };
+
+  const handleRegionChange = () => {
+    form.setFieldsValue({ district_id: undefined, area_id: undefined });
+  };
+
+  const handleDistrictChange = () => {
+    form.setFieldsValue({ area_id: undefined });
+  };
 
   // Category field mapping for dynamic field visibility
   const categoryFieldMap = {
     Buildings: {
-      show: ['title', 'description', 'location', 'price', 'status_id', 'subcategory_id', 'bedrooms', 'bathrooms', 'size', 'amenities', 'furnished', 'business_id'],
+      show: ['title', 'description', 'price', 'status_id', 'subcategory_id', 'bedrooms', 'bathrooms', 'size', 'amenities', 'furnished', 'business_id'],
       hide: ['land_size', 'duration', 'project_timeline', 'contractor']
     },
     Plots: {
-      show: ['title', 'description', 'location', 'price', 'land_size', 'subcategory_id', 'status_id', 'amenities', 'business_id'],
+      show: ['title', 'description', 'price', 'land_size', 'subcategory_id', 'status_id', 'amenities', 'business_id'],
       hide: ['bedrooms', 'bathrooms', 'furnished', 'project_timeline', 'contractor']
     },
     Projects: {
-      show: ['title', 'description', 'location', 'subcategory_id', 'status_id', 'budget', 'start_date', 'end_date', 'contractor', 'amenities', 'business_id'],
+      show: ['title', 'description', 'subcategory_id', 'status_id', 'budget', 'start_date', 'end_date', 'contractor', 'amenities', 'business_id'],
       hide: ['price', 'bedrooms', 'bathrooms', 'furnished', 'land_size']
     }
   };
@@ -172,7 +275,10 @@ const EditProperty = (props) => {
       form.setFieldsValue({
           title: record?.title,
           description: record?.description,
-          location: record?.location,
+          entity_id: record?.entity_id ?? record?.entity?.id,
+          region_id: record?.region_id ?? record?.region?.id,
+          district_id: record?.district_id ?? record?.district?.id,
+          area_id: record?.area_id ?? record?.area?.id,
           price: record?.price,
           category_id: record?.category?.id,
           subcategory_id: record?.subcategory?.id,
@@ -229,10 +335,14 @@ const EditProperty = (props) => {
       subcategory_id: values.subcategory_id,
       title: values.title,
       description: values.description,
-      location: values.location,
       status_id: values.status_id,
       amenities: amenities || []
     };
+
+    data.entity_id = values.entity_id;
+    data.region_id = values.region_id;
+    data.district_id = values.district_id;
+    data.area_id = values.area_id;
 
     // Add conditional fields based on what should be shown
     if (shouldShowField('price')) {
@@ -354,11 +464,125 @@ const EditProperty = (props) => {
               </Col>
               <Col xs={24} md={12}>
               <Form.Item
-                  label="Location"
-                  name="location"
-                  rules={[{ required: true, message: "Location is required" }]}
+                  label="Entity"
+                  name="entity_id"
+                  rules={[{ required: true, message: "Entity is required" }]}
                 >
-                  <Input placeholder="Enter property location" style={FIELD_STYLE} disabled={!selectedCategory} />
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder="Select entity"
+                    className="custom-select"
+                    disabled={!selectedCategory}
+                  >
+                    {entityOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="Region"
+                  name="region_id"
+                  rules={[{ required: true, message: "Region is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder="Select region"
+                    className="custom-select"
+                    disabled={!selectedCategory}
+                    onChange={handleRegionChange}
+                  >
+                    {regionOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="District"
+                  name="district_id"
+                  rules={[{ required: true, message: "District is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder={watchedRegionId ? "Select district" : "Select region first"}
+                    className="custom-select"
+                    disabled={!selectedCategory || !watchedRegionId}
+                    loading={PropertyDistrictsObject?.isFetching}
+                    onChange={handleDistrictChange}
+                  >
+                    {districtOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="Area"
+                  name="area_id"
+                  rules={[{ required: true, message: "Area is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder={watchedDistrictId ? "Search or select area" : "Select district first"}
+                    className="custom-select"
+                    disabled={!selectedCategory || !watchedDistrictId}
+                    loading={PropertyAreasObject?.isFetching}
+                    searchValue={areaSearch}
+                    onSearch={setAreaSearch}
+                    onSelect={() => setAreaSearch("")}
+                    showSearch={{
+                      filterOption: (input, option) =>
+                        (option?.children ?? "")
+                          .toString()
+                          .toLowerCase()
+                          .includes((input ?? "").trim().toLowerCase()),
+                    }}
+                    popupRender={(menu) => (
+                      <>
+                        {menu}
+                        {showCreateAreaChip && (
+                          <div
+                            style={{
+                              padding: "8px",
+                              borderTop: "1px solid rgba(0,0,0,0.06)",
+                              background: "#fafafa",
+                            }}
+                          >
+                            <Button
+                              type="link"
+                              loading={addingArea}
+                              block
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={handleCreateAreaFromSearch}
+                              style={{
+                                padding: 0,
+                                height: "auto",
+                                textAlign: "left",
+                              }}
+                            >
+                              Create “{trimmedAreaSearch}” as new area
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  >
+                    {areaOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
               </Form.Item>
               </Col>
               {shouldShowField('price') && (

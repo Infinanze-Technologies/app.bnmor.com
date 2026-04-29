@@ -17,13 +17,24 @@ import {
 import ImageUpload from '@/components/form/ImageUpload';
 import RichTextEditor from '@/components/form/RichTextEditor';
 import { postRequest } from "@/hooks/apiService";
-import { URL_ADD_PROPERTIES, URL_GET_PROPERTY_CATEGORIES, URL_GET_CATEGORY_ATTRIBUTES } from "@/config/api-paths";
+import {
+  URL_ADD_PROPERTIES,
+  URL_GET_PROPERTY_CATEGORIES,
+  URL_GET_CATEGORY_ATTRIBUTES,
+  URL_GET_PROPERTY_ENTITIES,
+  URL_GET_PROPERTY_REGIONS,
+  URL_GET_PROPERTY_DISTRICTS,
+  URL_GET_PROPERTY_AREAS,
+  URL_ADD_LOCATIONS_AREAS,
+} from "@/config/api-paths";
 import useHandleResponse from "@/hooks/useHandleResponse";
 import useSelectQuery from "@/hooks/ReactQuery/useSelectQuery";
 import amenitiesData from "@/constants/amenities.json";
 
 
 const { Option } = Select;
+
+const MAX_PROPERTY_IMAGES = 6;
 
 const getBase64 = file =>
 new Promise((resolve, reject) => {
@@ -35,12 +46,16 @@ new Promise((resolve, reject) => {
 
 const AddProperty = (props) => {
   const [form] = Form.useForm();
+  const watchedRegionId = Form.useWatch("region_id", form);
+  const watchedDistrictId = Form.useWatch("district_id", form);
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [amenities, setAmenities] = useState([]);
+  const [areaSearch, setAreaSearch] = useState("");
+  const [addingArea, setAddingArea] = useState(false);
   const { handleRequestError, handleRequestResponse } = useHandleResponse()
   let { setIsModalVisible, refetch, jwt, forceRefetch } = props;
 
@@ -70,6 +85,38 @@ const AddProperty = (props) => {
     filter: ''
   });
 
+  const PropertyEntitiesObject = useSelectQuery({
+    url: URL_GET_PROPERTY_ENTITIES,
+    jwt: jwt,
+    tableKey: "PropertyEntities",
+    filter: '',
+  });
+
+  const PropertyRegionsObject = useSelectQuery({
+    url: URL_GET_PROPERTY_REGIONS,
+    jwt: jwt,
+    tableKey: "PropertyRegions",
+    filter: '',
+  });
+
+  const PropertyDistrictsObject = useSelectQuery({
+    url: watchedRegionId ? `${URL_GET_PROPERTY_DISTRICTS}/${watchedRegionId}` : null,
+    jwt: jwt,
+    tableKey: "PropertyDistricts",
+    filter: '',
+  });
+
+  const PropertyAreasObject = useSelectQuery({
+    url: watchedDistrictId ? `${URL_GET_PROPERTY_AREAS}/${watchedDistrictId}` : null,
+    jwt: jwt,
+    tableKey: "PropertyAreas",
+    filter: '',
+  });
+
+  useEffect(() => {
+    setAreaSearch("");
+  }, [watchedDistrictId]);
+
   // Update subcategories and statuses when category attributes are loaded
   useEffect(() => {
     if (CategoryAttributesDataObject?.data) {
@@ -93,19 +140,79 @@ const AddProperty = (props) => {
   }, [selectedCategory, form]);
 
   const categoryOptions = CategoriesDataObject?.data || [];
+  const entityOptions = PropertyEntitiesObject?.data || [];
+  const regionOptions = PropertyRegionsObject?.data || [];
+  const districtOptions = PropertyDistrictsObject?.data || [];
+  const areaOptions = PropertyAreasObject?.data || [];
+
+  const areaNameExistsExactly = (nameToCheck) => {
+    const t = String(nameToCheck ?? "").trim().toLowerCase();
+    if (!t) return false;
+    return areaOptions.some(
+      (a) => String(a.name ?? "").trim().toLowerCase() === t
+    );
+  };
+
+  const trimmedAreaSearch = areaSearch.trim();
+  const showCreateAreaChip =
+    !!watchedDistrictId &&
+    !!selectedCategory &&
+    trimmedAreaSearch.length > 0 &&
+    !areaNameExistsExactly(trimmedAreaSearch) &&
+    !addingArea &&
+    !PropertyAreasObject?.isFetching;
+
+  const handleCreateAreaFromSearch = async () => {
+    const name = trimmedAreaSearch;
+    if (!name || !watchedDistrictId || !jwt) return;
+    if (areaNameExistsExactly(name)) return;
+    setAddingArea(true);
+    try {
+      const res = await postRequest(
+        URL_ADD_LOCATIONS_AREAS,
+        { district_id: watchedDistrictId, name },
+        jwt
+      );
+      handleRequestResponse(res);
+      const payload = res?.data?.data;
+      const rawId =
+        payload?.id != null ? payload.id : payload?.area_id ?? res?.data?.id;
+      const newId =
+        rawId !== undefined && rawId !== null
+          ? Number(rawId)
+          : undefined;
+      await PropertyAreasObject.forceRefetch?.();
+      if (newId !== undefined && !Number.isNaN(newId)) {
+        form.setFieldsValue({ area_id: newId });
+      }
+      setAreaSearch("");
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      setAddingArea(false);
+    }
+  };
+
+  const handleRegionChange = () => {
+    form.setFieldsValue({ district_id: undefined, area_id: undefined });
+  };
+
+  const handleDistrictChange = () => {
+    form.setFieldsValue({ area_id: undefined });
+  };
 
   // Category field mapping for dynamic field visibility
   const categoryFieldMap = {
     Buildings: {
-      show: ['title', 'description', 'location', 'price', 'status_id', 'subcategory_id', 'bedrooms', 'bathrooms', 'size', 'amenities', 'furnished', 'images', 'business_id'],
+      show: ['title', 'description', 'price', 'status_id', 'subcategory_id', 'bedrooms', 'bathrooms', 'size', 'amenities', 'furnished', 'images', 'business_id'],
       hide: ['land_size', 'duration', 'project_timeline', 'contractor']
     },
     Plots: {
-      show: ['title', 'description', 'location', 'price', 'land_size', 'subcategory_id', 'status_id', 'amenities', 'business_id','images'],
+      show: ['title', 'description', 'price', 'land_size', 'subcategory_id', 'status_id', 'amenities', 'business_id','images'],
       hide: ['bedrooms', 'bathrooms', 'furnished', 'project_timeline', 'contractor']
     },
     Projects: {
-      show: ['title', 'description', 'location', 'subcategory_id', 'status_id', 'budget', 'start_date', 'end_date', 'contractor', 'amenities', 'business_id', 'images'],
+      show: ['title', 'description', 'subcategory_id', 'status_id', 'budget', 'start_date', 'end_date', 'contractor', 'amenities', 'business_id', 'images'],
       hide: ['price', 'bedrooms', 'bathrooms', 'furnished', 'land_size']
     }
   };
@@ -149,7 +256,7 @@ const AddProperty = (props) => {
 
   // Helper function to check if field should be shown
   const shouldShowField = (fieldName) => {
-    if (!selectedCategory) return true; // Show all fields when no category selected
+    if (!selectedCategory) return true;
     return currentFieldMap.show.includes(fieldName);
   };
 
@@ -157,26 +264,21 @@ const AddProperty = (props) => {
   // Form submit handler
   const onFinish = async values => {
     
-    // Convert uploaded image to base64
-    let imageBase64 = null;
-    
-    // Process uploaded file
-    if (fileList.length > 0 && fileList[0].originFileObj) {
-      imageBase64 = await getBase64(fileList[0].originFileObj);
-    }
-    
     // Prepare data for API submission - only include fields that should be shown
     const data = {
       category_id: values.category_id,
       subcategory_id: values.subcategory_id,
       title: values.title,
       description: values.description,
-      location: values.location,
       status_id: values.status_id,
-      image: imageBase64 || "string",
       amenities: amenities || [],
       business_id: values.business_id
     };
+
+    data.entity_id = values.entity_id;
+    data.region_id = values.region_id;
+    data.district_id = values.district_id;
+    data.area_id = values.area_id;
 
     // Add conditional fields based on what should be shown
     if (shouldShowField('price')) {
@@ -217,6 +319,17 @@ const AddProperty = (props) => {
     
     if (shouldShowField('contractor')) {
       data.contractor = values.contractor || "";
+    }
+
+    if (shouldShowField('images')) {
+      const uploads = fileList.filter((f) => f?.originFileObj);
+      if (uploads.length === 0) {
+        message.warning("Please upload at least one property image");
+        return;
+      }
+      data.images = await Promise.all(
+        uploads.map((f) => getBase64(f.originFileObj))
+      );
     }
 
     setLoading(true);
@@ -306,11 +419,125 @@ const AddProperty = (props) => {
               </Col>
               <Col xs={24} md={12}>
               <Form.Item
-                  label="Location"
-                  name="location"
-                  rules={[{ required: true, message: "Location is required" }]}
+                  label="Entity"
+                  name="entity_id"
+                  rules={[{ required: true, message: "Entity is required" }]}
                 >
-                  <Input placeholder="Enter property location" style={FIELD_STYLE} disabled={!selectedCategory} />
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder="Select entity"
+                    className="custom-select"
+                    disabled={!selectedCategory}
+                  >
+                    {entityOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="Region"
+                  name="region_id"
+                  rules={[{ required: true, message: "Region is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder="Select region"
+                    className="custom-select"
+                    disabled={!selectedCategory}
+                    onChange={handleRegionChange}
+                  >
+                    {regionOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="District"
+                  name="district_id"
+                  rules={[{ required: true, message: "District is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder={watchedRegionId ? "Select district" : "Select region first"}
+                    className="custom-select"
+                    disabled={!selectedCategory || !watchedRegionId}
+                    loading={PropertyDistrictsObject?.isFetching}
+                    onChange={handleDistrictChange}
+                  >
+                    {districtOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+              </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+              <Form.Item
+                  label="Area"
+                  name="area_id"
+                  rules={[{ required: true, message: "Area is required" }]}
+                >
+                  <Select
+                    {...SELECT_PROPS}
+                    placeholder={watchedDistrictId ? "Search or select area" : "Select district first"}
+                    className="custom-select"
+                    disabled={!selectedCategory || !watchedDistrictId}
+                    loading={PropertyAreasObject?.isFetching}
+                    searchValue={areaSearch}
+                    onSearch={setAreaSearch}
+                    onSelect={() => setAreaSearch("")}
+                    showSearch={{
+                      filterOption: (input, option) =>
+                        (option?.children ?? "")
+                          .toString()
+                          .toLowerCase()
+                          .includes((input ?? "").trim().toLowerCase()),
+                    }}
+                    popupRender={(menu) => (
+                      <>
+                        {menu}
+                        {showCreateAreaChip && (
+                          <div
+                            style={{
+                              padding: "8px",
+                              borderTop: "1px solid rgba(0,0,0,0.06)",
+                              background: "#fafafa",
+                            }}
+                          >
+                            <Button
+                              type="link"
+                              loading={addingArea}
+                              block
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={handleCreateAreaFromSearch}
+                              style={{
+                                padding: 0,
+                                height: "auto",
+                                textAlign: "left",
+                              }}
+                            >
+                              Create “{trimmedAreaSearch}” as new area
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  >
+                    {areaOptions.map((item) => (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
               </Form.Item>
               </Col>
               {shouldShowField('price') && (
@@ -595,30 +822,30 @@ const AddProperty = (props) => {
 
           {/* Image Upload */}
           {shouldShowField('images') && (
-            <Card type="inner" title="Property Image" style={{ marginBottom: 24, borderRadius: 8 }}>
+            <Card type="inner" title="Property Images" style={{ marginBottom: 24, borderRadius: 8 }}>
             <Row gutter={16}>
               <Col xs={24}>
                 <Form.Item
                   label={
-                      <Tooltip title="Upload property image" color="#ffffff">
-                        Upload Property Image
+                      <Tooltip title={`Upload property images — up to ${MAX_PROPERTY_IMAGES} files`} color="#ffffff">
+                        Upload Property Images
                     </Tooltip>
                   }
                   rules={[
-                      { required: true, message: "Please upload a property image" }
+                      { required: true, message: "Please upload at least one property image" }
                   ]}
                 >
                   <ImageUpload
                     fileList={fileList}
                     onChange={handleImageChange}
-                      maxCount={1}
+                    maxCount={MAX_PROPERTY_IMAGES}
                     uploadText="Upload"
                     disabled={!selectedCategory}
-                    maxSizeMB={5}
+                    maxSizeMB={6}
                   />
                 </Form.Item>
                 <div style={{ marginTop: 8, fontSize: 12, color: '#666' }}>
-                    <strong>Note:</strong> Upload a single property image (Maximum file size: 5MB)
+                    <strong>Note:</strong> Up to {MAX_PROPERTY_IMAGES} images — 6MB each.
                 </div>
               </Col>
             </Row>

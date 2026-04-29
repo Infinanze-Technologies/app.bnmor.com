@@ -6,6 +6,7 @@ import EditPropertyStatus from "./EditPropertyStatus";
 import AddProperty from "./AddProperty";
 import DeleteProperty from "./DeleteProperty";
 import ViewPropertyFiles from "./ViewPropertyFiles";
+import ViewProperty from "./ViewProperty";
 import AddPropertyImage from "./AddPropertyImage";
 import { URL_DELETE_PROPERTY, URL_PROPERTY_STATUS } from "@/config/api-paths";
 import useHandleResponse from "@/hooks/useHandleResponse";
@@ -19,6 +20,8 @@ import { Switch } from 'antd';
 import FilterOptions from "./FilterOptions";
 import { BUTTON_CONFIGS } from "@/utils/buttonStyles";
 
+const MAX_PROPERTY_IMAGES = 6;
+
 const PropertiesTable = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState();
@@ -27,6 +30,7 @@ const PropertiesTable = (props) => {
   const [statusModalVisible, setStatusModalVisible] = useState(false);
   const [filesModalVisible, setFilesModalVisible] = useState(false);
   const [addImageModalVisible, setAddImageModalVisible] = useState(false);
+  const [viewPropertyVisible, setViewPropertyVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const { handleRequestError, handleRequestResponse } = useHandleResponse()
   let { PropertiesDataObject, jwt,setLoading,loading } = props;
@@ -114,6 +118,9 @@ const onPageChange = (page, pageSize) => {
       title: 'Location',
       dataIndex: 'location',
       align: "center",
+      render: (text, record) => {
+        return `${record?.region?.name} / ${record?.area?.name}`;
+      }
     },
     {
       title: 'Price / Budget',
@@ -358,7 +365,16 @@ const onPageChange = (page, pageSize) => {
     forceRefetch();
   };
 
-  const menu = (record) => (
+  const handleViewPropertyCancel = () => {
+    setViewPropertyVisible(false);
+    setSelectedRecord(null);
+  };
+
+  const menu = (record) => {
+    const propertyImageCount = Array.isArray(record?.images) ? record.images.length : 0;
+    const canAddMoreImages = propertyImageCount < MAX_PROPERTY_IMAGES;
+
+    return (
     <Menu 
     style={{
       borderRadius: '8px',
@@ -367,6 +383,35 @@ const onPageChange = (page, pageSize) => {
       minWidth: '150px'
     }}
     >
+      <Menu.Item key="view" style={{
+        color: '#4D4D4D',
+        fontWeight: '500',
+        padding: '8px 16px',
+        borderRadius: '4px',
+        margin: '4px',
+        transition: 'all 0.3s ease'
+      }}
+      onMouseEnter={(e) => {
+        if (e.currentTarget && e.currentTarget.style) {
+          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (e.currentTarget && e.currentTarget.style) {
+          e.currentTarget.style.background = 'transparent';
+        }
+      }}
+      >
+        <a
+          onClick={() => {
+            setSelectedRecord(record);
+            setViewPropertyVisible(true);
+          }}
+          style={{ color: '#4D4D4D' }}
+        >
+          View details
+        </a>
+      </Menu.Item>
       <Menu.Item key="1" style={{
         color: '#4D4D4D',
         fontWeight: '500',
@@ -412,6 +457,7 @@ const onPageChange = (page, pageSize) => {
           setFilesModalVisible(true);
         }} style={{ color: '#4D4D4D' }}>View Images</a>
       </Menu.Item>
+      {canAddMoreImages && (
       <Menu.Item key="3" style={{
         color: '#4D4D4D',
         fontWeight: '500',
@@ -439,6 +485,7 @@ const onPageChange = (page, pageSize) => {
           Add Image
         </a>
       </Menu.Item>
+      )}
       <Menu.Item key="4" style={{
         color: '#4D4D4D',
         fontWeight: '500',
@@ -461,7 +508,8 @@ const onPageChange = (page, pageSize) => {
         <a onClick={() => showModal("delete", record)} style={{ color: '#4D4D4D' }}>Delete</a>
       </Menu.Item>
     </Menu>
-  );
+    );
+  };
 
 
 
@@ -613,6 +661,12 @@ const onPageChange = (page, pageSize) => {
         jwt={jwt}
         refetch={refetch}
         forceRefetch={forceRefetch}
+      />
+
+      <ViewProperty
+        visible={viewPropertyVisible}
+        onCancel={handleViewPropertyCancel}
+        record={selectedRecord}
       />
 
       <ViewPropertyFiles

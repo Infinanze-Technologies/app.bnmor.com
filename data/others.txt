@@ -1,0 +1,281 @@
+URL_GET_PROPERTY_ENTITIES
+REQUEST: GET
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": 3,
+      "name": "Jane Developer"
+    },
+    {
+      "id": 2,
+      "name": "Jane Developer"
+    }
+  ],
+  "failed": false,
+  "message": "Entities Retrieved Successfully",
+  "timeStamp": "2026-04-29T00:21:05.452Z"
+}
+
+
+URL_GET_PROPERTY_REGIONS
+REQUEST: GET
+
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": 1,
+      "name": "Ahafo Region"
+    },
+    {
+      "id": 2,
+      "name": "Ashanti Region"
+    },
+    {
+      "id": 4,
+      "name": "Bono East Region"
+    },
+    {
+      "id": 3,
+      "name": "Bono Region"
+    },
+    {
+      "id": 5,
+      "name": "Central Region"
+    },
+    {
+      "id": 6,
+      "name": "Eastern Region"
+    },
+    {
+      "id": 7,
+      "name": "Greater Accra Region"
+    },
+    {
+      "id": 9,
+      "name": "North East Region"
+    },
+    {
+      "id": 8,
+      "name": "Northern Region"
+    },
+    {
+      "id": 10,
+      "name": "Oti Region"
+    },
+    {
+      "id": 11,
+      "name": "Savannah Region"
+    },
+    {
+      "id": 12,
+      "name": "Upper East Region"
+    },
+    {
+      "id": 13,
+      "name": "Upper West Region"
+    },
+    {
+      "id": 14,
+      "name": "Volta Region"
+    },
+    {
+      "id": 16,
+      "name": "Western North Region"
+    },
+    {
+      "id": 15,
+      "name": "Western Region"
+    }
+  ],
+  "failed": false,
+  "message": "Regions Retrieved Successfully",
+  "timeStamp": "2026-04-29T00:20:56.975Z"
+}
+
+
+
+URL_GET_PROPERTY_DISTRICTS/{region_id}
+REQUEST: GET
+
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": 128,
+      "region_id": 7,
+      "name": "Ablekuma Central Municipal"
+    },
+    {
+      "id": 129,
+      "region_id": 7,
+      "name": "Ablekuma North Municipal"
+    },
+    {
+      "id": 130,
+      "region_id": 7,
+      "name": "Ablekuma West Municipal"
+    },
+    {
+      "id": 131,
+      "region_id": 7,
+      "name": "Accra Metropolitan"
+    },
+    {
+      "id": 132,
+      "region_id": 7,
+      "name": "Ada East District"
+    },
+    {
+      "id": 133,
+      "region_id": 7,
+      "name": "Ada West District"
+    },
+    {
+      "id": 134,
+      "region_id": 7,
+      "name": "Adenta Municipal"
+    },
+    {
+      "id": 135,
+      "region_id": 7,
+      "name": "Ashaiman Municipal"
+    },
+    {
+      "id": 136,
+      "region_id": 7,
+      "name": "Ayawaso Central Municipal"
+    },
+    {
+      "id": 137,
+      "region_id": 7,
+      "name": "Ayawaso East Municipal"
+    },
+    {
+      "id": 138,
+      "region_id": 7,
+      "name": "Ayawaso North Municipal"
+    },
+    {
+      "id": 139,
+      "region_id": 7,
+      "name": "Ayawaso West Municipal"
+    },
+    {
+      "id": 140,
+      "region_id": 7,
+      "name": "Ga Central Municipal"
+    },
+    {
+      "id": 141,
+      "region_id": 7,
+      "name": "Ga East Municipal"
+    },
+    {
+      "id": 142,
+      "region_id": 7,
+      "name": "Ga North Municipal"
+    },
+    {
+      "id": 143,
+      "region_id": 7,
+      "name": "Ga South Municipal"
+    },
+    {
+      "id": 144,
+      "region_id": 7,
+      "name": "Ga West Municipal"
+    },
+    {
+      "id": 145,
+      "region_id": 7,
+      "name": "Korle-Klottey Municipal"
+    },
+    {
+      "id": 146,
+      "region_id": 7,
+      "name": "Kpone-Katamanso Municipal"
+    },
+    {
+      "id": 147,
+      "region_id": 7,
+      "name": "Krowor Municipal"
+    },
+    {
+      "id": 148,
+      "region_id": 7,
+      "name": "La-Dade-Kotopon Municipal"
+    },
+    {
+      "id": 149,
+      "region_id": 7,
+      "name": "La-Nkwantanang-Madina Municipal"
+    },
+    {
+      "id": 150,
+      "region_id": 7,
+      "name": "Ledzokuku Municipal"
+    },
+    {
+      "id": 151,
+      "region_id": 7,
+      "name": "Ningo-Prampram District"
+    },
+    {
+      "id": 152,
+      "region_id": 7,
+      "name": "Okaikwei North Municipal"
+    },
+    {
+      "id": 153,
+      "region_id": 7,
+      "name": "Shai-Osudoku District"
+    },
+    {
+      "id": 154,
+      "region_id": 7,
+      "name": "Tema Metropolitan"
+    },
+    {
+      "id": 155,
+      "region_id": 7,
+      "name": "Tema West Municipal"
+    },
+    {
+      "id": 156,
+      "region_id": 7,
+      "name": "Weija Gbawe Municipal"
+    }
+  ],
+  "failed": false,
+  "message": "Districts Retrieved Successfully",
+  "timeStamp": "2026-04-29T00:21:52.099Z"
+}
+
+
+URL_GET_PROPERTY_AREAS/{district_id}
+REQUEST: GET
+
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": 152,
+      "district_id": 152,
+      "name": "Tesano"
+    }
+  ],
+  "failed": false,
+  "message": "Areas Retrieved Successfully",
+  "timeStamp": "2026-04-29T00:22:26.642Z"
+}
+
+
+URL_ADD_LOCATIONS_AREAS
+REQUEST: POST
+
+{
+  "district_id": 12,
+  "name": "East Legon",
+}

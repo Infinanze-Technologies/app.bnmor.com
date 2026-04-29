@@ -1,0 +1,45 @@
+URL_GET_ENTITIES
+REQUEST: GET
+{
+  "statusCode": 200,
+  "message": "success",
+  "data": [
+    {
+      "id": 3,
+      "name": "Jane Developer",
+      "email": "jane@example.com",
+      "phone": "+233201234567"
+    },
+    {
+      "id": 2,
+      "name": "Jane Developer",
+      "email": "jane@example.com",
+      "phone": "+233201234567"
+    }
+  ],
+  "failed": false,
+  "currentPage": 1,
+  "totalItems": 2,
+  "totalPages": 1
+}
+
+
+URL_ADD_ENTITIES
+REQUEST: POST
+{
+  "name": "Jane Developer",
+  "email": "jane@example.com",
+  "phone": "+233201234567"
+}
+
+
+URL_UPDATE_ENTITIES/{entity_id}
+REQUEST: PUT
+{
+  "name": "Jane Developer",
+  "email": "jane@example.com",
+  "phone": "+233201234567"
+}
+
+URL_DELETE_ENTITIES/{entity_id}
+REQUEST: DELETE

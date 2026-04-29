@@ -6,7 +6,7 @@ import { postRequest } from '@/hooks/apiService';
 import useHandleResponse from '@/hooks/useHandleResponse';
 import { URL_ADD_PROPERTY_FILES } from '@/config/api-paths';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const AddPropertyImage = ({ propertyId, visible, onCancel, onSuccess, jwt }) => {
   const [form] = Form.useForm();
@@ -22,13 +22,13 @@ const AddPropertyImage = ({ propertyId, visible, onCancel, onSuccess, jwt }) => 
     try {
       setLoading(true);
       
-      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      // Validate file size (6MB = 6 * 1024 * 1024 bytes)
       if (fileList.length > 0 && fileList[0]?.originFileObj) {
         const fileSize = fileList[0].originFileObj.size;
-        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        const maxSize = 6 * 1024 * 1024; // 6MB in bytes
         
         if (fileSize > maxSize) {
-          message.error('File size must not exceed 5MB');
+          message.error('File size must not exceed 6MB');
           setLoading(false);
           return;
         }
@@ -130,7 +130,7 @@ const AddPropertyImage = ({ propertyId, visible, onCancel, onSuccess, jwt }) => 
                   maxCount={1}
                   uploadText="Upload"
                   accept="image/png,image/jpeg,image/jpg,image/webp"
-                  maxSizeMB={5}
+                  maxSizeMB={6}
                 />
               </div>
             </Form.Item>
@@ -139,7 +139,7 @@ const AddPropertyImage = ({ propertyId, visible, onCancel, onSuccess, jwt }) => 
 
         <div style={{ marginTop: '16px', padding: '12px', background: '#f9f9f9', borderRadius: '8px', textAlign: 'center' }}>
           <Text type="secondary" style={{ fontSize: '12px' }}>
-            <strong>Supported formats:</strong> JPG, PNG, WebP. Max size: 5MB.
+            <strong>Supported formats:</strong> JPG, PNG, WebP. Max size: 6MB.
           </Text>
         </div>
       </Card>

@@ -1,181 +1,201 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Typography, Avatar, Button, Divider, List, Space, Modal, Image } from 'antd';
-import { UserOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, FileImageOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/router';
+import React from 'react';
+import {
+  Modal,
+  Button,
+  Typography,
+  Descriptions,
+  Tag,
+  Divider,
+  Row,
+  Col,
+  Space,
+  Image,
+} from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
+import {
+  formatDateHuman,
+  formatDateTime,
+} from '@/config/DateFormat';
 
-const { Title, Text } = Typography;
+const { Text, Title } = Typography;
 
-const borrower = {
-  name: 'Emma Oppong',
-  gender: 'Male',
-  dob: '23 May 2006',
-  maritalStatus: 'Single',
-  identification: 'Licence',
-  occupation: 'Employed',
-  taxId: '12336',
-  address: 'Nungua',
-  city: 'Accra',
-  email: 'demo477@gmail.com',
-  secondaryPhone: '+233245990160',
-  profileImage: '', // Use a URL or leave blank for placeholder
-  identificationImages: [
-    'https://bedrock.trade/assets/logo2.svg',
-    'https://infinanza.com/assets/logo_bluewhite-870b42a3617b51357c1f731c6799b9e086849eb978c0a3cb103da70171463067.png',
-  ],
+const dash = (v) => {
+  if (v === null || v === undefined || v === '') return '—';
+  return String(v);
 };
 
-const activityLogs = [
-  {
-    time: '1 day ago',
-    action: 'create',
-    description: 'You created this borrower',
-  },
-];
+const ViewProperty = ({ visible, onCancel, record }) => {
+  if (!record) return null;
 
-const ViewProperty = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [docModalOpen, setDocModalOpen] = useState(false);
+  const entity = record.entity;
+  const category = record.category;
+  const subcategory = record.subcategory;
+  const statusLabel = record.statuses;
+  const region = record.region;
+  const district = record.district;
+  const area = record.area;
+  const amenities = Array.isArray(record.amenities) ? record.amenities : [];
+  const images = Array.isArray(record.images) ? record.images : [];
 
-  const showDeleteModal = () => setDeleteModalOpen(true);
-  const handleCancel = () => setDeleteModalOpen(false);
-  const handleDelete = () => {
-    // TODO: Implement actual delete logic
-    setDeleteModalOpen(false);
-  };
-
-  const showDocModal = () => setDocModalOpen(true);
-  const handleDocModalClose = () => setDocModalOpen(false);
+  const locationDisplay = [region?.name, district?.name, area?.name]
+    .filter(Boolean)
+    .join(' / ');
 
   return (
-    <div style={{ padding: 24, background: '#f7f8fa', minHeight: '100vh' }}>
-      <Row gutter={[24, 24]}>
-        <Col xs={24} md={16}>
-          <Card
-            title={<Title level={5} style={{ margin: 0 }}>Borrower Details</Title>}
-            bordered={false}
-            style={{ borderRadius: 12, boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}
-            bodyStyle={{ padding: 32 }}
-          >
-            <Row gutter={32} align="middle">
-              <Col xs={24} md={16}>
-                <Row gutter={[0, 24]}>
-                  <Col span={12}><Text strong>Name</Text><br />{borrower.name}</Col>
-                  <Col span={12}><Text strong>Address</Text><br />{borrower.address}</Col>
-                  <Col span={12}><Text strong>Gender</Text><br />{borrower.gender}</Col>
-                  <Col span={12}><Text strong>City</Text><br />{borrower.city}</Col>
-                  <Col span={12}><Text strong>Date of Birth</Text><br />{borrower.dob}</Col>
-                  <Col span={12}><Text strong>Email</Text><br />{borrower.email}</Col>
-                  <Col span={12}><Text strong>Marital Status</Text><br />{borrower.maritalStatus}</Col>
-                  <Col span={12}><Text strong>Secondary Phone Number</Text><br />{borrower.secondaryPhone}</Col>
-                  <Col span={12}><Text strong>Identification</Text><br />{borrower.identification}</Col>
-                  <Col span={12}><Text strong>Occupation</Text><br />{borrower.occupation}</Col>
-                  <Col span={12}><Text strong>Tax Identification Number/Reference</Text><br />{borrower.taxId}</Col>
-                </Row>
-              </Col>
-              <Col xs={24} md={8} style={{ textAlign: 'center' }}>
-                <Avatar
-                  size={120}
-                  src={borrower.profileImage}
-                  icon={<UserOutlined />}
-                  style={{ background: '#e6f7ff', marginBottom: 16, border: '4px solid #fff', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
-                />
-                <div style={{ marginTop: 16 }}>
-                  <Button icon={<FileImageOutlined />} onClick={showDocModal} type="dashed" shape="round">
-                    View Identification Images
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-          <Card
-            title={<Title level={5} style={{ margin: 0, color: '#d4380d' }}><ExclamationCircleOutlined style={{ color: '#d4380d', marginRight: 8 }} />Danger Zone</Title>}
-            bordered={false}
-            style={{ borderRadius: 12, marginTop: 32, boxShadow: '0 2px 16px rgba(0,0,0,0.04)' }}
-            bodyStyle={{ padding: 32 }}
-          >
-            <Row gutter={24}>
-              <Col xs={24} md={12}>
-                <Text strong>Modify Borrower</Text>
-                <div style={{ color: '#888', marginBottom: 12 }}>Change details of the borrower.</div>
-                <Button icon={<EditOutlined />} type="primary" shape="round" onClick={() => router.push(`/dashboard/borrower-management/borrowers/edit/${id}`)}>Edit</Button>
-              </Col>
-              <Col xs={24} md={12}>
-                <Text strong>Delete Borrower</Text>
-                <div style={{ color: '#888', marginBottom: 12 }}>Delete this borrower.</div>
-                <Button icon={<DeleteOutlined />} type="danger" danger shape="round" onClick={showDeleteModal}>Delete</Button>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col xs={24} md={8}>
-          <Card
-            title={<Title level={5} style={{ margin: 0 }}>Activity Logs</Title>}
-            bordered={false}
-            style={{ borderRadius: 12, boxShadow: '0 2px 16px rgba(0,0,0,0.04)' }}
-            bodyStyle={{ padding: 24 }}
-          >
-            <List
-              itemLayout="horizontal"
-              dataSource={activityLogs}
-              renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={<span style={{ fontSize: 13, color: '#888' }}>{item.time} <Button size="small" style={{ marginLeft: 8 }} type="dashed">{item.action}</Button></span>}
-                    description={<span style={{ fontSize: 14 }}>{item.description}</span>}
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Col>
-      </Row>
-      <Modal
-        open={deleteModalOpen}
-        title={<span style={{ color: '#d4380d', fontWeight: 600 }}>Delete Borrower</span>}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="cancel" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="delete" type="primary" danger onClick={handleDelete}>
-            Delete
-          </Button>,
-        ]}
-      >
-        <p style={{ fontSize: 16, marginBottom: 0 }}>
-          Are you sure you want to delete this borrower? <br />
-          <b>All of the borrower's loans, repayments and file data will be permanently deleted and cannot be recovered.</b>
-        </p>
-      </Modal>
-      <Modal
-        open={docModalOpen}
-        title={<span style={{ fontWeight: 600 }}>Identification Images</span>}
-        onCancel={handleDocModalClose}
-        footer={[
-          <Button key="close" onClick={handleDocModalClose}>
-            Close
-          </Button>,
-        ]}
-        width={500}
-      >
-        <Row gutter={16} justify="center">
-          {borrower.identificationImages.map((img, idx) => (
-            <Col span={12} key={idx} style={{ textAlign: 'center', marginBottom: 16 }}>
-              <Image
-                src={img}
-                alt={`ID File ${idx + 1}`}
-                width={180}
-                height={110}
-                style={{ borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
-                placeholder
-              />
-            </Col>
+    <Modal
+      title={
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <EyeOutlined style={{ color: '#1890ff' }} />
+          <span>Property details</span>
+          {category?.name && (
+            <Tag color="blue" style={{ marginLeft: 8 }}>
+              {category.name}
+            </Tag>
+          )}
+        </div>
+      }
+      open={visible}
+      onCancel={onCancel}
+      width={980}
+      style={{ top: 20 }}
+      bodyStyle={{
+        maxHeight: 'calc(85vh - 140px)',
+        overflowY: 'auto',
+        paddingTop: 8,
+      }}
+      footer={
+        <Button type="primary" onClick={onCancel}>
+          Close
+        </Button>
+      }
+    >
+      <Title level={5} style={{ marginTop: 0, marginBottom: 16 }}>
+        {dash(record.title)}
+      </Title>
+
+      <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 2 }} layout="horizontal">
+        <Descriptions.Item label="ID">{dash(record.id)}</Descriptions.Item>
+        <Descriptions.Item label="UUID" span={2}>
+          <Text copyable={{ text: record.uuid }}>{dash(record.uuid)}</Text>
+        </Descriptions.Item>
+        <Descriptions.Item label="Record status">
+          <Tag color={record.status !== false ? 'success' : 'default'}>
+            {record.status !== false ? 'Active' : 'Inactive'}
+          </Tag>
+        </Descriptions.Item>
+        <Descriptions.Item label="Listing status">
+          {dash(statusLabel?.name)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Created">
+          {record.created_at ? formatDateTime(record.created_at) : '—'}
+        </Descriptions.Item>
+        <Descriptions.Item label="Updated">
+          {record.updated_at ? formatDateTime(record.updated_at) : '—'}
+        </Descriptions.Item>
+      </Descriptions>
+
+      <Divider orientation="left">Classification</Divider>
+      <Descriptions bordered size="small" column={{ xs: 1, md: 2 }}>
+        <Descriptions.Item label="Category">{dash(category?.name)}</Descriptions.Item>
+        <Descriptions.Item label="Subcategory">{dash(subcategory?.name)}</Descriptions.Item>
+      </Descriptions>
+
+      <Divider orientation="left">Location</Divider>
+      <Descriptions bordered size="small" column={1}>
+        <Descriptions.Item label="Location">
+          {locationDisplay || '—'}
+        </Descriptions.Item>
+      </Descriptions>
+
+      {entity && (
+        <>
+          <Divider orientation="left">Entity</Divider>
+          <Descriptions bordered size="small" column={{ xs: 1, md: 2 }}>
+            <Descriptions.Item label="Name">{dash(entity.name)}</Descriptions.Item>
+            <Descriptions.Item label="Email">{dash(entity.email)}</Descriptions.Item>
+            <Descriptions.Item label="Phone" span={2}>
+              {dash(entity.phone)}
+            </Descriptions.Item>
+          </Descriptions>
+        </>
+      )}
+
+      <Divider orientation="left">Pricing & details</Divider>
+      <Descriptions bordered size="small" column={{ xs: 1, md: 2 }}>
+        <Descriptions.Item label="Price">{dash(record.price)}</Descriptions.Item>
+        <Descriptions.Item label="Land size">{dash(record.land_size)}</Descriptions.Item>
+        <Descriptions.Item label="Bedrooms">{dash(record.bedrooms)}</Descriptions.Item>
+        <Descriptions.Item label="Bathrooms">{dash(record.bathrooms)}</Descriptions.Item>
+        <Descriptions.Item label="Size (sq ft)">{dash(record.size)}</Descriptions.Item>
+        <Descriptions.Item label="Furnished">
+          {record.furnished === true ? (
+            <Tag color="green">Yes</Tag>
+          ) : record.furnished === false ? (
+            <Tag>No</Tag>
+          ) : (
+            '—'
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label="Budget">{dash(record.budget)}</Descriptions.Item>
+        <Descriptions.Item label="Contractor">{dash(record.contractor)}</Descriptions.Item>
+        <Descriptions.Item label="Project start">
+          {record.start_date ? formatDateHuman(record.start_date) : '—'}
+        </Descriptions.Item>
+        <Descriptions.Item label="Project end">
+          {record.end_date ? formatDateHuman(record.end_date) : '—'}
+        </Descriptions.Item>
+      </Descriptions>
+
+      <Divider orientation="left">Amenities</Divider>
+      {amenities.length > 0 ? (
+        <Space wrap size={[8, 8]}>
+          {amenities.map((a) => (
+            <Tag key={a}>{a}</Tag>
           ))}
-        </Row>
-      </Modal>
-    </div>
+        </Space>
+      ) : (
+        <Text type="secondary">—</Text>
+      )}
+
+      <Divider orientation="left">Description</Divider>
+      {record.description ? (
+        <div
+          className="property-html-description"
+          style={{
+            border: '1px solid #f0f0f0',
+            borderRadius: 8,
+            padding: 12,
+            background: '#fafafa',
+            maxHeight: 240,
+            overflow: 'auto',
+          }}
+          dangerouslySetInnerHTML={{ __html: record.description }}
+        />
+      ) : (
+        <Text type="secondary">—</Text>
+      )}
+
+      <Divider orientation="left">Images ({images.length})</Divider>
+      {images.length > 0 ? (
+        <Image.PreviewGroup>
+          <Row gutter={[12, 12]}>
+            {images.map((img, idx) => (
+              <Col xs={12} sm={8} md={6} key={img.id ?? idx}>
+                <Image
+                  alt={record.title ? `${record.title} ${idx + 1}` : `Image ${idx + 1}`}
+                  src={img.image_url}
+                  style={{ borderRadius: 8, width: '100%', objectFit: 'cover' }}
+                  height={140}
+                  placeholder
+                />
+              </Col>
+            ))}
+          </Row>
+        </Image.PreviewGroup>
+      ) : (
+        <Text type="secondary">No images</Text>
+      )}
+    </Modal>
   );
 };
 

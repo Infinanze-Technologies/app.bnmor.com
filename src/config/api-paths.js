@@ -423,6 +423,7 @@ export const URL_UPDATE_BORROWER = 'borrowers'
 export const URL_DELETE_BORROWER= 'borrowers'
 export const URL_BORROWER_STATUS = 'borrowers/update_borrower_status'
 export const URL_UPDATE_BORROWER_IMAGE = 'borrowers/image'
+export const URL_GET_MEMBER_TYPES_BORROWER = 'borrowers/member-types'
 
 
 // Guarantor
@@ -561,6 +562,7 @@ export const URL_ADD_PROPERTIES = 'properties'
 export const URL_SHOW_PROPERTIES = 'properties'
 export const URL_UPDATE_PROPERTIES = 'properties'
 export const URL_DELETE_PROPERTIES = 'properties'
+export const URL_DELETE_PROPERTY = 'properties'
 export const URL_PROPERTIES_STATUS = 'properties/status'
 export const URL_ADD_PROPERTY_FILES = 'properties/image'
 export const URL_DELETE_PROPERTY_FILES = 'properties/image'
@@ -568,6 +570,21 @@ export const URL_DELETE_PROPERTY_FILES = 'properties/image'
 export const URL_GET_PROPERTY_CATEGORIES = 'properties/categories'
 export const URL_GET_PROPERTY_SUBCATEGORIES = 'properties/subcategories'
 export const URL_GET_PROPERTY_STATUS = 'properties/statuses'
+export const URL_GET_PROPERTY_ENTITIES = 'properties/entities'
+export const URL_GET_PROPERTY_REGIONS = 'properties/regions'
+export const URL_GET_PROPERTY_DISTRICTS = 'properties/regions/districts'
+export const URL_GET_PROPERTY_AREAS = 'properties/districts/areas'
+
+
+export const URL_GET_ENTITIES = 'entities'
+export const URL_ADD_ENTITIES = 'entities'
+export const URL_SHOW_ENTITIES = 'entities'
+export const URL_UPDATE_ENTITIES = 'entities'
+export const URL_DELETE_ENTITIES = 'entities'
+
+
+export const URL_ADD_LOCATIONS_AREAS = 'locations/areas'
+
 
 
 // Ledger Endpoints
