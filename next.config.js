@@ -13,6 +13,7 @@ const nextConfig = {
   transpilePackages: [
     '@ant-design',
     'antd',
+    'antd-img-crop',
     'rc-*',
     'classnames',
     '@babel/runtime',
