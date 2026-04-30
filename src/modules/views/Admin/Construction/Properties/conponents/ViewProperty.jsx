@@ -113,8 +113,11 @@ const ViewProperty = ({ visible, onCancel, record }) => {
           <Descriptions bordered size="small" column={{ xs: 1, md: 2 }}>
             <Descriptions.Item label="Name">{dash(entity.name)}</Descriptions.Item>
             <Descriptions.Item label="Email">{dash(entity.email)}</Descriptions.Item>
-            <Descriptions.Item label="Phone" span={2}>
+            <Descriptions.Item label="Phone">
               {dash(entity.phone)}
+            </Descriptions.Item>
+            <Descriptions.Item label="Alternative Number">
+              {dash(entity.alternative_number)}
             </Descriptions.Item>
           </Descriptions>
         </>

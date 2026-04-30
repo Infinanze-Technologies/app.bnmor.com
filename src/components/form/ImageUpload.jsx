@@ -18,7 +18,8 @@ const ImageUpload = ({
   maxSizeMB = 2,
   showPreview = true,
   uploadText = "Upload",
-  disabled = false
+  disabled = false,
+  multiple = false,
 }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -80,6 +81,7 @@ const ImageUpload = ({
         maxCount={maxCount}
         disabled={disabled}
         accept={accept}
+        multiple={multiple}
       >
         {fileList.length >= maxCount ? null : uploadButton}
       </Upload>

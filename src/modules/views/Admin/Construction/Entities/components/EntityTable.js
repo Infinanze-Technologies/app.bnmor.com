@@ -139,7 +139,15 @@ const EntityTable = (props) => {
       dataIndex: 'phone',
       align: "left",
       render: (text, record) => (
-        <span>{record?.phone}</span>
+        <span>{record?.phone || 'N/A'}</span>
+      )
+    },
+    {
+      title: 'ALTERNATIVE NUMBER',
+      dataIndex: 'alternative_number',
+      align: "left",
+      render: (text, record) => (
+        <span>{record?.alternative_number || 'N/A'}</span>
       )
     },
     {

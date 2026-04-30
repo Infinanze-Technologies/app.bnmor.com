@@ -206,6 +206,8 @@ export default function AdminAntLayout({
       parentKey = 'construction-management';
       if (pathname.includes('/categories')) {
         activeKey = 'construction-categories';
+      } else if (pathname.includes('/entities')) {
+        activeKey = 'construction-entities';
       } else if (pathname.includes('/properties')) {
         activeKey = 'construction-properties';
       }
@@ -500,6 +502,9 @@ export default function AdminAntLayout({
         break;
       case 'construction-categories':
         router.push('/dashboard/constructions/categories');
+        break;
+      case 'construction-management':
+        router.push('/dashboard/constructions/properties');
         break;
       case 'construction-properties':
         router.push('/dashboard/constructions/properties');

@@ -17,6 +17,7 @@ const EditEntity = (props) => {
         name: record?.name,
         email: record?.email,
         phone: record?.phone,
+        alternative_number: record?.alternative_number,
       });
     } catch (error) {
       console.log(error);
@@ -89,6 +90,14 @@ const EditEntity = (props) => {
                   message: "Please input phone!",
                 },
               ]}
+            />
+          </Col>
+
+          <Col span={24} md={24}>
+            <CustomInput
+              label="Alternative Number"
+              name="alternative_number"
+              placeholder="Enter alternative number"
             />
           </Col>
 

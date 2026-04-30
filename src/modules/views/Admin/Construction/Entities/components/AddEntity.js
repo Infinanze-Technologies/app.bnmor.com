@@ -87,6 +87,14 @@ const AddEntity = (props) => {
           </Col>
 
           <Col span={24} md={24}>
+            <CustomInput
+              label="Alternative Number"
+              name="alternative_number"
+              placeholder="Enter alternative number"
+            />
+          </Col>
+
+          <Col span={24} md={24}>
             <div className="d-flex justify-content-end">
               <Form.Item>
                 <Button

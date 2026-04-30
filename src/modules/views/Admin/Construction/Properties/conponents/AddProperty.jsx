@@ -842,6 +842,7 @@ const AddProperty = (props) => {
                     uploadText="Upload"
                     disabled={!selectedCategory}
                     maxSizeMB={6}
+                    multiple
                   />
                 </Form.Item>
                 <div style={{ marginTop: 8, fontSize: 12, color: '#666' }}>
