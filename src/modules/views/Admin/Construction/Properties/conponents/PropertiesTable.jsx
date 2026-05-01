@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Menu, Space, Popconfirm, Avatar, Spin, Table, Tag, Button, Pagination } from "antd";
+import { Dropdown, Space, Popconfirm, Avatar, Spin, Table, Tag, Button, Pagination } from "antd";
 import ModalComponent from "@/components/ModalComponent";
 import EditProperty from "./EditProperty";
 import EditPropertyStatus from "./EditPropertyStatus";
@@ -227,18 +227,26 @@ const onPageChange = (page, pageSize) => {
       key: "action",
       align: "center",
       render: (text, record) => (
-        <Dropdown overlay={menu(record)} trigger={["click"]} placement="bottomRight">
-          <Button 
-            type="text" 
+        <Dropdown
+          trigger={['click']}
+          placement="bottomRight"
+          menu={{
+            items: getRowActionMenuItems(record),
+            onClick: ({ domEvent }) => domEvent?.stopPropagation?.(),
+          }}
+        >
+          <Button
+            type="text"
             icon={<AiOutlineMore />}
-            style={{ 
+            onClick={(e) => e.stopPropagation()}
+            style={{
               border: 'none',
               boxShadow: 'none',
               fontSize: '16px',
               color: '#666',
               padding: '4px 8px',
               borderRadius: '6px',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
               e.target.style.backgroundColor = '#f5f5f5';
@@ -340,11 +348,6 @@ const onPageChange = (page, pageSize) => {
 
 
 
-  const handleStatusEdit = (record) => {
-    setSelectedRecord(record);
-    setStatusModalVisible(true);
-  };
-
   const handleStatusModalCancel = () => {
     setStatusModalVisible(false);
     setSelectedRecord(null);
@@ -370,145 +373,57 @@ const onPageChange = (page, pageSize) => {
     setSelectedRecord(null);
   };
 
-  const menu = (record) => {
+  /**
+   * Ant Design 5: use Dropdown `menu={{ items }}` instead of deprecated `overlay={<Menu/>}`.
+   * The legacy combo can leave an invisible full-viewport layer that steals clicks (e.g. sidebar).
+   */
+  const getRowActionMenuItems = (record) => {
     const propertyImageCount = Array.isArray(record?.images) ? record.images.length : 0;
     const canAddMoreImages = propertyImageCount < MAX_PROPERTY_IMAGES;
 
-    return (
-    <Menu 
-    style={{
-      borderRadius: '8px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-      border: '1px solid #f0f0f0',
-      minWidth: '150px'
-    }}
-    >
-      <Menu.Item key="view" style={{
-        color: '#4D4D4D',
-        fontWeight: '500',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        margin: '4px',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
-      >
-        <a
-          onClick={() => {
-            setSelectedRecord(record);
-            setViewPropertyVisible(true);
-          }}
-          style={{ color: '#4D4D4D' }}
-        >
-          View details
-        </a>
-      </Menu.Item>
-      <Menu.Item key="1" style={{
-        color: '#4D4D4D',
-        fontWeight: '500',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        margin: '4px',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
-      >
-        <a onClick={() => showModal("edit", record)} style={{ color: '#4D4D4D' }}>Edit</a>
-      </Menu.Item>
-      <Menu.Item key="2" style={{
-        color: '#4D4D4D',
-        fontWeight: '500',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        margin: '4px',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
-      >
-        <a onClick={() => {
+    const items = [
+      {
+        key: 'view',
+        label: 'View details',
+        onClick: () => {
+          setSelectedRecord(record);
+          setViewPropertyVisible(true);
+        },
+      },
+      {
+        key: 'edit',
+        label: 'Edit',
+        onClick: () => showModal('edit', record),
+      },
+      {
+        key: 'images',
+        label: 'View Images',
+        onClick: () => {
           setSelectedRecord(record);
           setFilesModalVisible(true);
-        }} style={{ color: '#4D4D4D' }}>View Images</a>
-      </Menu.Item>
-      {canAddMoreImages && (
-      <Menu.Item key="3" style={{
-        color: '#4D4D4D',
-        fontWeight: '500',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        margin: '4px',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
-      >
-        <a onClick={() => {
+        },
+      },
+    ];
+
+    if (canAddMoreImages) {
+      items.push({
+        key: 'add-image',
+        label: 'Add Image',
+        onClick: () => {
           setSelectedRecord(record);
           setAddImageModalVisible(true);
-        }} style={{ color: '#4D4D4D' }}>
-          {/* <UploadOutlined style={{ marginRight: '8px' }} /> */}
-          Add Image
-        </a>
-      </Menu.Item>
-      )}
-      <Menu.Item key="4" style={{
-        color: '#4D4D4D',
-        fontWeight: '500',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        margin: '4px',
-        transition: 'all 0.3s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'rgba(77, 77, 77, 0.1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (e.currentTarget && e.currentTarget.style) {
-          e.currentTarget.style.background = 'transparent';
-        }
-      }}
-      >
-        <a onClick={() => showModal("delete", record)} style={{ color: '#4D4D4D' }}>Delete</a>
-      </Menu.Item>
-    </Menu>
-    );
+        },
+      });
+    }
+
+    items.push({
+      key: 'delete',
+      label: 'Delete',
+      danger: true,
+      onClick: () => showModal('delete', record),
+    });
+
+    return items;
   };
 
 
@@ -676,7 +591,7 @@ const onPageChange = (page, pageSize) => {
         jwt={jwt}
         forceRefetch={forceRefetch}
         onFileUpdate={() => {
-          // Refresh the property data after file update
+   
           forceRefetch();
         }}
       />

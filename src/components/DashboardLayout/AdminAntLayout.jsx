@@ -73,6 +73,7 @@ export default function AdminAntLayout({
     return false;
   });
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [openKeys, setOpenKeys] = useState([]);
   const router = useRouter();
@@ -84,6 +85,7 @@ export default function AdminAntLayout({
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
+      setIsMobileOrTablet(window.innerWidth < 1024);
       if (window.innerWidth < 768) {
         setCollapsed(true);
         localStorage.setItem('sidebar-collapsed', 'true');
@@ -422,6 +424,10 @@ export default function AdminAntLayout({
     signOut({ callbackUrl: PAGE_LOGIN });
   };
 
+  const navigateMenu = (path) => {
+    void router.push(path, undefined, { scroll: true });
+  };
+
   const handleMenuClick = ({ key }) => {
     // Handle admin-specific menu item clicks
     switch (key) {
@@ -501,16 +507,13 @@ export default function AdminAntLayout({
         router.push('/dashboard/finance/payer');
         break;
       case 'construction-categories':
-        router.push('/dashboard/constructions/categories');
-        break;
-      case 'construction-management':
-        router.push('/dashboard/constructions/properties');
-        break;
-      case 'construction-properties':
-        router.push('/dashboard/constructions/properties');
+        navigateMenu('/dashboard/constructions/categories');
         break;
       case 'construction-entities':
-        router.push('/dashboard/constructions/entities');
+        navigateMenu('/dashboard/constructions/entities');
+        break;
+      case 'construction-properties':
+        navigateMenu('/dashboard/constructions/properties');
         break;
       case 'visitor-entries':
         router.push('/dashboard/man_visitors/entries');
@@ -908,29 +911,31 @@ export default function AdminAntLayout({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '20px' }}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => handleCollapse(!collapsed)}
-              style={{
-                fontSize: '18px',
-                width: 44,
-                height: 44,
-                borderRadius: '12px',
-                background: 'rgba(95, 99, 242, 0.1)',
-                border: '1px solid rgba(95, 99, 242, 0.2)',
-                color: '#5F63F2',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(95, 99, 242, 0.2)';
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(95, 99, 242, 0.1)';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            />
+            {!isMobileOrTablet && (
+              <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => handleCollapse(!collapsed)}
+                style={{
+                  fontSize: '18px',
+                  width: 44,
+                  height: 44,
+                  borderRadius: '12px',
+                  background: 'rgba(95, 99, 242, 0.1)',
+                  border: '1px solid rgba(95, 99, 242, 0.2)',
+                  color: '#5F63F2',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(95, 99, 242, 0.2)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(95, 99, 242, 0.1)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              />
+            )}
             <div>
               <Title level={3} style={{ 
                 margin: 0, 
@@ -953,21 +958,23 @@ export default function AdminAntLayout({
           </div>
           
           <Space size="middle" style={{ display: 'flex', alignItems: 'center' }}>
-            <Badge count={0} size="small" style={{ backgroundColor: '#5F63F2' }}>
-              <Button
-                type="text"
-                icon={<BellOutlined />}
-                style={{
-                  fontSize: '18px',
-                  width: 44,
-                  height: 44,
-                  borderRadius: '12px',
-                  background: 'rgba(95, 99, 242, 0.1)',
-                  border: '1px solid rgba(95, 99, 242, 0.2)',
-                  color: '#5F63F2',
-                }}
-              />
-            </Badge>
+            {!isMobileOrTablet && (
+              <Badge count={0} size="small" style={{ backgroundColor: '#5F63F2' }}>
+                <Button
+                  type="text"
+                  icon={<BellOutlined />}
+                  style={{
+                    fontSize: '18px',
+                    width: 44,
+                    height: 44,
+                    borderRadius: '12px',
+                    background: 'rgba(95, 99, 242, 0.1)',
+                    border: '1px solid rgba(95, 99, 242, 0.2)',
+                    color: '#5F63F2',
+                  }}
+                />
+              </Badge>
+            )}
             
             <Dropdown
               menu={{ items: userMenuItems }}
@@ -1079,7 +1086,7 @@ export default function AdminAntLayout({
               zIndex: 0,
             }} />
             
-            <div style={{ position: 'relative', zIndex: 1 }}>
+            <div key={router.asPath} style={{ position: 'relative', zIndex: 1 }}>
               {children}
             </div>
           </div>

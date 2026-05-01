@@ -40,17 +40,22 @@ const FilterOptions = (props) => {
     filter: ''
   });
 
-  // Update subcategories and statuses when category attributes are loaded
+  // Update subcategories and statuses only when payload changes.
+  // Depending on the full query object can retrigger this effect on every render.
+  const categoryAttributesData = CategoryAttributesDataObject?.data;
   useEffect(() => {
-    if (CategoryAttributesDataObject?.data) {
-      const attributes = CategoryAttributesDataObject.data;
-      setSubcategories(attributes.subcategories || []);
-      setStatuses(attributes.statuses || []);
+    if (categoryAttributesData) {
+      const attributes = categoryAttributesData;
+      const nextSubcategories = attributes.subcategories || [];
+      const nextStatuses = attributes.statuses || [];
+
+      setSubcategories((prev) => (prev === nextSubcategories ? prev : nextSubcategories));
+      setStatuses((prev) => (prev === nextStatuses ? prev : nextStatuses));
     } else {
-      setSubcategories([]);
-      setStatuses([]);
+      setSubcategories((prev) => (prev.length ? [] : prev));
+      setStatuses((prev) => (prev.length ? [] : prev));
     }
-  }, [CategoryAttributesDataObject]);
+  }, [categoryAttributesData]);
 
   // Reset subcategory and status when category changes
   useEffect(() => {

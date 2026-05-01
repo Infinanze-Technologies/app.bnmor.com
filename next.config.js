@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost','lh3.googleusercontent.com','mocky.io'], //Domain of image host
+    domains: ['localhost','lh3.googleusercontent.com','mocky.io','192.168.8.194'], //Domain of image host
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
   },
   eslint: {
