@@ -26,11 +26,9 @@ const index = (props) => {
   return (
     <>
       <div>
-  
-        
         {/* Category Table Content */}
-        <div className="d-flex justify-content-center pt-5">
-        <div className="col-md-12">
+        <div className="row">
+          <div className="col-md-12 d-flex">
             <CategoryTable jwt={jwt} CategoryDataObject={CategoryDataObject}/>
           </div>
         </div>

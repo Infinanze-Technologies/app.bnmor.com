@@ -25,10 +25,8 @@ const index = (props) => {
   return (
     <>
       <div>
-  
-        
-        <div className="d-flex justify-content-center pt-5">
-        <div className="col-md-12">
+        <div className="row">
+          <div className="col-md-12 d-flex">
             <EntityTable jwt={jwt} EntityDataObject={EntityDataObject}/>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Select, Form, Card, Row, Col } from "antd";
+import { Button, Select, Form, Card, Row, Col, Grid } from "antd";
 import CustomInput from "@/components/form/CustomInput";
 import { URL_UPDATE_BRANCH } from "@/config/api-paths";
 import { updateRequest } from "@/hooks/apiService";
@@ -10,6 +10,9 @@ import { BUTTON_CONFIGS } from "@/utils/buttonStyles";
 const { Option } = Select;
 
 const EditCategory = (props) => {
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
   const { jwt, setIsModalVisible, record, refetch,forceRefetch } = props;
   const { handleRequestError, handleRequestResponse } = useHandleResponse();
   const [form] = Form.useForm();
@@ -51,7 +54,7 @@ const EditCategory = (props) => {
         layout="vertical"
       >
         <Card type="inner" title="Edit Branch" style={{ marginBottom: 24, borderRadius: 8 }}>
-      <Row gutter={16}>
+      <Row gutter={[16, 0]}>
           <Col span={24} md={24}>
             <CustomInput
               label="Name"
@@ -105,14 +108,15 @@ const EditCategory = (props) => {
           </Col>
           
           <Col span={24} md={24}>
-            <div className="d-flex justify-content-end">
+            <div className={`d-flex ${isMobile ? "justify-content-center" : "justify-content-end"}`}>
               <Form.Item>
                 <Button
                   loading={isloadingSubmit}
                   {...BUTTON_CONFIGS.SAVE_BUTTON()}
-                  size="small"
+                  size={isMobile ? "middle" : "small"}
                   shape="round"
                   htmlType="submit"
+                  style={{ minWidth: isMobile ? 140 : undefined }}
                 >
                   {isloadingSubmit ? 'Loading...' : 'Save'}     
                 </Button>

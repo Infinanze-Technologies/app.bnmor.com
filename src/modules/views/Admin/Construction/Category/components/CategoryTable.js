@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Menu, Space, Popconfirm, Avatar, Spin, Table, Button } from "antd";
+import { Dropdown, Menu, Space, Popconfirm, Avatar, Spin, Table, Button, Grid } from "antd";
 import ModalComponent from "@/components/ModalComponent";
 import EditCategory from "./EditCategory";
 import StatusView from "./StatusView";
@@ -20,6 +20,9 @@ import { BUTTON_CONFIGS } from "@/utils/buttonStyles";
 // import Image from "next/image";
 
 const CategoryTable = (props) => {
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobileOrTablet = !screens.lg;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [modalWidth, setModalWidth] = useState();
@@ -228,13 +231,13 @@ const CategoryTable = (props) => {
     if (value == "add") {
       setIsModalVisible(true);
       setModalTitle(<AddCategoryTitle/>);
-      setModalWidth(500);
+      setModalWidth(isMobileOrTablet ? "95%" : 500);
       setModalContent(<AddCategory setIsModalVisible={setIsModalVisible} jwt={jwt} refetch={refetch} forceRefetch={forceRefetch} />)
     }
     else if (value == "edit") {
       setIsModalVisible(true);
       setModalTitle(<EditCategoryTitle />);
-      setModalWidth(500);
+      setModalWidth(isMobileOrTablet ? "95%" : 500);
       setModalContent(
         <EditCategory
           setIsModalVisible={setIsModalVisible}
@@ -248,7 +251,7 @@ const CategoryTable = (props) => {
     else if (value == "statuses") {
       setIsModalVisible(true);
       setModalTitle(<StatusesTitle record={record} />);
-      setModalWidth(800);
+      setModalWidth(isMobileOrTablet ? "95%" : 800);
       setModalContent(
         <StatusView
           setIsModalVisible={setIsModalVisible}
@@ -259,7 +262,7 @@ const CategoryTable = (props) => {
     else if (value == "subcategories") {
       setIsModalVisible(true);
       setModalTitle(<SubcategoriesTitle record={record} />);
-      setModalWidth(800);
+      setModalWidth(isMobileOrTablet ? "95%" : 800);
       setModalContent(
         <SubcategoryView
           setIsModalVisible={setIsModalVisible}
@@ -278,33 +281,33 @@ const CategoryTable = (props) => {
 
 
   const EditCategoryStatusTitle = () => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Edit Category Status</h6>
     </div>
   );
 
 
   const EditCategoryTitle = () => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Edit Category</h6>
     </div>
   );
 
   const AddCategoryTitle = () => (
-    <div className="flex flex-wrap" style={{ width: 700}}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
     <h6>Add Category</h6>
 
     </div>
   )
 
   const StatusesTitle = ({ record }) => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Statuses for {record?.category_name} ({record?.statuses?.length || 0} items)</h6>
     </div>
   );
 
   const SubcategoriesTitle = ({ record }) => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Subcategories for {record?.category_name} ({record?.subcategories?.length || 0} items)</h6>
     </div>
   );
@@ -363,11 +366,13 @@ const CategoryTable = (props) => {
           <div className="card-header" style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
-          alignItems: 'center',
+          alignItems: isMobileOrTablet ? 'flex-start' : 'center',
+          flexDirection: isMobileOrTablet ? 'column' : 'row',
+          gap: isMobileOrTablet ? 12 : 0,
           background: 'linear-gradient(135deg, #4D4D4D 0%, #6B6B6B 100%)',
           borderBottom: '1px solid rgba(77, 77, 77, 0.2)',
           borderRadius: '12px 12px 0 0',
-          padding: '20px 24px'
+          padding: isMobileOrTablet ? '16px' : '20px 24px'
         }}>
           <h3 className="card-title mb-0" style={{ 
             color: '#ffffff',
@@ -406,7 +411,7 @@ const CategoryTable = (props) => {
             Create
           </Button> */}
         </div>
-      <div className="card-body">
+      <div className="card-body" style={{ padding: isMobileOrTablet ? '12px' : '24px' }}>
         <div className="table-responsive">
         <UserTableStyleWrapper>
           <TableWrapper>
@@ -419,6 +424,7 @@ const CategoryTable = (props) => {
               emptyText: qryData?.length === 0 || qryData === null ? 'No data found' : 'No data'
             }}
             rowKey="id"
+            scroll={{ x: 1100 }}
             style={{
               background: '#ffffff'
             }}
@@ -460,6 +466,11 @@ const CategoryTable = (props) => {
         handleCancel={handleCancel}
         title={modalTitle}
         width={modalWidth}
+        bodyStyle={{
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          overflowX: 'hidden'
+        }}
       >
         {modalContent}
       </ModalComponent>

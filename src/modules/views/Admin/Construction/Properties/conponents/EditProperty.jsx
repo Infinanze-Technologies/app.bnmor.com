@@ -274,6 +274,7 @@ const EditProperty = (props) => {
       if (record) {
       form.setFieldsValue({
           title: record?.title,
+          link: record?.link ?? "",
           description: record?.description,
           entity_id: record?.entity_id ?? record?.entity?.id,
           region_id: record?.region_id ?? record?.region?.id,
@@ -343,6 +344,7 @@ const EditProperty = (props) => {
     data.region_id = values.region_id;
     data.district_id = values.district_id;
     data.area_id = values.area_id;
+    data.link = values.link?.trim() || null;
 
     // Add conditional fields based on what should be shown
     if (shouldShowField('price')) {
@@ -461,6 +463,18 @@ const EditProperty = (props) => {
                 >
                   <Input placeholder="Enter property title" style={FIELD_STYLE} disabled={!selectedCategory} />
               </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item
+                  label="YouTube Link (Optional)"
+                  name="link"
+                >
+                  <Input
+                    placeholder="Enter YouTube video link"
+                    style={FIELD_STYLE}
+                    disabled={!selectedCategory}
+                  />
+                </Form.Item>
               </Col>
               <Col xs={24} md={12}>
               <Form.Item

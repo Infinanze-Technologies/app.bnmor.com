@@ -107,6 +107,10 @@ const onPageChange = (page, pageSize) => {
       title: 'Title',
       dataIndex: 'title',
       align: "center",
+      render: (text) => {
+        if (!text) return 'N/A';
+        return text.length > 20 ? `${text.substring(0, 20)}...` : text;
+      }
     },
     // {
     //   title: 'Description',

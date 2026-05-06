@@ -279,6 +279,10 @@ const AddProperty = (props) => {
     data.region_id = values.region_id;
     data.district_id = values.district_id;
     data.area_id = values.area_id;
+    const youtubeLink = values.link?.trim();
+    if (link) {
+      data.link = youtubeLink;
+    }
 
     // Add conditional fields based on what should be shown
     if (shouldShowField('price')) {
@@ -416,6 +420,18 @@ const AddProperty = (props) => {
                 >
                   <Input placeholder="Enter property title" style={FIELD_STYLE} disabled={!selectedCategory} />
               </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item
+                  label="YouTube Link (Optional)"
+                  name="link"
+                >
+                  <Input
+                    placeholder="Enter YouTube video link"
+                    style={FIELD_STYLE}
+                    disabled={!selectedCategory}
+                  />
+                </Form.Item>
               </Col>
               <Col xs={24} md={12}>
               <Form.Item

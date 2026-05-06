@@ -24,6 +24,28 @@ const dash = (v) => {
   return String(v);
 };
 
+const getYouTubeEmbedUrl = (url) => {
+  if (!url) return null;
+  try {
+    const parsedUrl = new URL(url);
+    const host = parsedUrl.hostname.replace('www.', '');
+
+    if (host === 'youtube.com' || host === 'm.youtube.com') {
+      const videoId = parsedUrl.searchParams.get('v');
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (host === 'youtu.be') {
+      const videoId = parsedUrl.pathname.replace('/', '').trim();
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+  } catch (error) {
+    return null;
+  }
+
+  return null;
+};
+
 const ViewProperty = ({ visible, onCancel, record }) => {
   if (!record) return null;
 
@@ -36,6 +58,8 @@ const ViewProperty = ({ visible, onCancel, record }) => {
   const area = record.area;
   const amenities = Array.isArray(record.amenities) ? record.amenities : [];
   const images = Array.isArray(record.images) ? record.images : [];
+  const youtubeLink = record.link;
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(youtubeLink);
 
   const locationDisplay = [region?.name, district?.name, area?.name]
     .filter(Boolean)
@@ -174,6 +198,38 @@ const ViewProperty = ({ visible, onCancel, record }) => {
           }}
           dangerouslySetInnerHTML={{ __html: record.description }}
         />
+      ) : (
+        <Text type="secondary">—</Text>
+      )}
+
+      <Divider orientation="left">Video</Divider>
+      {youtubeLink ? (
+        <>
+          {youtubeEmbedUrl ? (
+            <div style={{ marginBottom: 8 }}>
+              <iframe
+                width="100%"
+                height="360"
+                src={youtubeEmbedUrl}
+                title="Property video"
+                style={{ border: 0, borderRadius: 8 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <Text type="secondary">Unable to preview this video link.</Text>
+          )}
+          <div>
+            <Button
+              type="link"
+              style={{ padding: 0 }}
+              onClick={() => window.open(youtubeLink, '_blank', 'noopener,noreferrer')}
+            >
+              Open video link
+            </Button>
+          </div>
+        </>
       ) : (
         <Text type="secondary">—</Text>
       )}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Form, Card, Row, Col, Select } from "antd";
+import { Button, Form, Card, Row, Col, Select, Grid } from "antd";
 import CustomInput from "@/components/form/CustomInput";
 import { postRequest } from "@/hooks/apiService";
 import { URL_ADD_BRANCH } from "@/config/api-paths";
@@ -10,6 +10,9 @@ import { BUTTON_CONFIGS } from "@/utils/buttonStyles";
 const { Option } = Select;
 
   const AddCategory = (props) => {
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
   const { jwt, setIsModalVisible, refetch,forceRefetch } = props;
   const { handleRequestError, handleRequestResponse } = useHandleResponse();
   const [form] = Form.useForm();
@@ -46,7 +49,7 @@ const { Option } = Select;
         layout="vertical"
       >
         <Card type="inner" title="Add Announcement" style={{ marginBottom: 24, borderRadius: 8 }}>
-      <Row gutter={16}>
+      <Row gutter={[16, 0]}>
       <Col span={12} xs={24} md={24}>
             <CustomInput
               label="Name"
@@ -100,14 +103,15 @@ const { Option } = Select;
           </Col>
           
           <Col span={24} md={24}>
-            <div className="d-flex justify-content-end">
+            <div className={`d-flex ${isMobile ? "justify-content-center" : "justify-content-end"}`}>
               <Form.Item>
                 <Button
                   loading={isloadingSubmit}
                   {...BUTTON_CONFIGS.SAVE_BUTTON()}
-                  size="small"
+                  size={isMobile ? "middle" : "small"}
                   shape="round"
                   htmlType="submit"
+                  style={{ minWidth: isMobile ? 140 : undefined }}
                 >
                   {isloadingSubmit ? 'Loading...' : 'Save'}     
                 </Button>

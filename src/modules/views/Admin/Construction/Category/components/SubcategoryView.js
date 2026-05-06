@@ -108,6 +108,7 @@ const SubcategoryView = ({ record, setIsModalVisible }) => {
          
         ]}
         rowKey="id"
+        scroll={{ x: 700 }}
         pagination={false}
         size="small"
         style={{

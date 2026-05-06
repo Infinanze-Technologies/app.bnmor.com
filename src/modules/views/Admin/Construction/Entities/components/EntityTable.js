@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Popconfirm, Table, Button } from "antd";
+import { Space, Popconfirm, Table, Button, Grid } from "antd";
 import ModalComponent from "@/components/ModalComponent";
 import EditEntity from "./EditEntity";
 import { URL_DELETE_ENTITIES } from "@/config/api-paths";
@@ -10,6 +10,9 @@ import { PlusOutlined } from '@ant-design/icons';
 import AddEntity from "./AddEntity";
 
 const EntityTable = (props) => {
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobileOrTablet = !screens.lg;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [modalWidth, setModalWidth] = useState();
@@ -41,13 +44,13 @@ const EntityTable = (props) => {
     if (value == "add") {
       setIsModalVisible(true);
       setModalTitle(<AddEntityTitle />);
-      setModalWidth(500);
+      setModalWidth(isMobileOrTablet ? "95%" : 500);
       setModalContent(<AddEntity setIsModalVisible={setIsModalVisible} jwt={jwt} refetch={refetch} forceRefetch={forceRefetch} />);
     }
     else if (value == "edit") {
       setIsModalVisible(true);
       setModalTitle(<EditEntityTitle record={record} />);
-      setModalWidth(500);
+      setModalWidth(isMobileOrTablet ? "95%" : 500);
       setModalContent(
         <EditEntity
           setIsModalVisible={setIsModalVisible}
@@ -68,13 +71,13 @@ const EntityTable = (props) => {
   };
 
   const EditEntityTitle = ({ record }) => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Edit Entity — {record?.name}</h6>
     </div>
   );
 
   const AddEntityTitle = () => (
-    <div className="flex flex-wrap" style={{ width: 700 }}>
+    <div className="flex flex-wrap" style={{ width: "100%" }}>
       <h6>Add Entity</h6>
     </div>
   );
@@ -201,11 +204,13 @@ const EntityTable = (props) => {
         <div className="card-header" style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: isMobileOrTablet ? 'flex-start' : 'center',
+          flexDirection: isMobileOrTablet ? 'column' : 'row',
+          gap: isMobileOrTablet ? 12 : 0,
           background: 'linear-gradient(135deg, #4D4D4D 0%, #6B6B6B 100%)',
           borderBottom: '1px solid rgba(77, 77, 77, 0.2)',
           borderRadius: '12px 12px 0 0',
-          padding: '20px 24px'
+          padding: isMobileOrTablet ? '16px' : '20px 24px'
         }}>
           <h3 className="card-title mb-0" style={{
             color: '#ffffff',
@@ -229,12 +234,13 @@ const EntityTable = (props) => {
               borderRadius: '8px',
               height: '40px',
               padding: '0 20px',
+              width: isMobileOrTablet ? '100%' : 'auto'
             }}
           >
             Create
           </Button>
         </div>
-        <div className="card-body">
+        <div className="card-body" style={{ padding: isMobileOrTablet ? '12px' : '24px' }}>
           <div className="table-responsive">
             <UserTableStyleWrapper>
               <TableWrapper>
@@ -247,6 +253,7 @@ const EntityTable = (props) => {
                     emptyText: qryData?.length === 0 || qryData === null ? 'No data found' : 'No data'
                   }}
                   rowKey="id"
+                  scroll={{ x: 900 }}
                   style={{
                     background: '#ffffff'
                   }}
@@ -287,6 +294,11 @@ const EntityTable = (props) => {
         handleCancel={handleCancel}
         title={modalTitle}
         width={modalWidth}
+        bodyStyle={{
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          overflowX: 'hidden'
+        }}
       >
         {modalContent}
       </ModalComponent>
