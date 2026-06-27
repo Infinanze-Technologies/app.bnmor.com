@@ -7,6 +7,34 @@ import useHandleResponse from '@/hooks/useHandleResponse';
 
 const { Title, Text } = Typography;
 
+const normalizeImageUrl = (url) => {
+  if (!url) return null;
+
+  let normalized = url.trim();
+  if (!/^https?:\/\//i.test(normalized)) {
+    normalized = `https://${normalized}`;
+  }
+
+  try {
+    const parsed = new URL(normalized);
+    const regionMatch = parsed.hostname.match(/^([a-z0-9-]+)\.digitaloceanspaces\.com$/i);
+
+    // e.g. sfo3.digitaloceanspaces.com/bnmore26/bnmore/uploads/... → bnmore26.sfo3.digitaloceanspaces.com/bnmore/uploads/...
+    if (regionMatch) {
+      const region = regionMatch[1];
+      const pathParts = parsed.pathname.replace(/^\/+/, '').split('/');
+      if (pathParts.length >= 2) {
+        const [bucket, ...restPath] = pathParts;
+        return `https://${bucket}.${region}.digitaloceanspaces.com/${restPath.join('/')}${parsed.search}`;
+      }
+    }
+  } catch {
+    return normalized;
+  }
+
+  return normalized;
+};
+
 const ViewPropertyFiles = ({ record, visible, onCancel, jwt, onFileUpdate }) => {
   const [loading, setLoading] = useState(false);
   const { handleRequestError, handleRequestResponse } = useHandleResponse();  
@@ -69,7 +97,7 @@ const ViewPropertyFiles = ({ record, visible, onCancel, jwt, onFileUpdate }) => 
     key: `image_${image.id || index}`,
     id: image.id,
     title: `Image ${index + 1}`,
-    url: image.image_url,
+    url: normalizeImageUrl(image.image_url),
     icon: <UserOutlined style={{ fontSize: '18px', color: '#1890ff' }} />,
     description: `Property image ${index + 1}`,
     color: index === 0 ? '#1890ff' : index === 1 ? '#52c41a' : '#fa8c16'
