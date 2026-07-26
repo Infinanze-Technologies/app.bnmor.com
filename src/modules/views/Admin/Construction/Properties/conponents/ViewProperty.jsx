@@ -110,6 +110,21 @@ const ViewProperty = ({ visible, onCancel, record }) => {
         <Descriptions.Item label="Listing status">
           {dash(statusLabel?.name)}
         </Descriptions.Item>
+        <Descriptions.Item label="Approval status">
+          {(() => {
+            const status = record.approval_status || 'pending';
+            const colorMap = {
+              pending: 'gold',
+              approved: 'green',
+              rejected: 'red',
+            };
+            return (
+              <Tag color={colorMap[status] || 'default'} style={{ textTransform: 'capitalize' }}>
+                {status}
+              </Tag>
+            );
+          })()}
+        </Descriptions.Item>
         <Descriptions.Item label="Created">
           {record.created_at ? formatDateTime(record.created_at) : '—'}
         </Descriptions.Item>

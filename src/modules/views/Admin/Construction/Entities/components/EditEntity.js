@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Form, Card, Row, Col, Grid } from "antd";
+import { Button, Form, Card, Row, Col, Grid, Input } from "antd";
 import CustomInput from "@/components/form/CustomInput";
 import { URL_UPDATE_ENTITIES } from "@/config/api-paths";
 import { updateRequest } from "@/hooks/apiService";
@@ -53,6 +53,16 @@ const EditEntity = (props) => {
     >
       <Card type="inner" title="Edit Entity" style={{ marginBottom: 24, borderRadius: 8 }}>
         <Row gutter={[16, 0]}>
+          <Col span={24} md={24}>
+            <Form.Item label="Entity ID">
+              <Input
+                disabled
+                value={record?.entity_code || '—'}
+                style={{ width: '100%', height: 50, borderRadius: 10 }}
+              />
+            </Form.Item>
+          </Col>
+
           <Col span={24} md={24}>
             <CustomInput
               label="Name"

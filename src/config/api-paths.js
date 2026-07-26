@@ -564,6 +564,7 @@ export const URL_UPDATE_PROPERTIES = 'properties'
 export const URL_DELETE_PROPERTIES = 'properties'
 export const URL_DELETE_PROPERTY = 'properties'
 export const URL_PROPERTIES_STATUS = 'properties/status'
+export const URL_PROPERTY_APPROVAL = 'properties' // append `/${uuid}/approval`
 export const URL_ADD_PROPERTY_FILES = 'properties/image'
 export const URL_DELETE_PROPERTY_FILES = 'properties/image'
 

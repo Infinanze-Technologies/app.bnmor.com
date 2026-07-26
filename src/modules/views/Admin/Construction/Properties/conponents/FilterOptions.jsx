@@ -18,6 +18,7 @@ const FilterOptions = (props) => {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedSubcategory, setSelectedSubcategory] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
+  const [selectedApprovalStatus, setSelectedApprovalStatus] = useState('ALL');
   const [selectedDateRange, setSelectedDateRange] = useState('ALL');
   const [customDateRange, setCustomDateRange] = useState(null);
   const [isDateModalVisible, setIsDateModalVisible] = useState(false);
@@ -122,6 +123,10 @@ const FilterOptions = (props) => {
     if (selectedStatus !== 'ALL') {
       apiFilter += `status_id=${selectedStatus}&`;
     }
+
+    if (selectedApprovalStatus !== 'ALL') {
+      apiFilter += `approval_status=${selectedApprovalStatus}&`;
+    }
     
     // Add date range filter
     if (selectedDateRange !== 'ALL') {
@@ -216,6 +221,7 @@ const FilterOptions = (props) => {
     setSelectedCategory('ALL');
     setSelectedSubcategory('ALL');
     setSelectedStatus('ALL');
+    setSelectedApprovalStatus('ALL');
     setSelectedDateRange('ALL');
     setCustomDateRange(null);
     
@@ -437,6 +443,32 @@ const FilterOptions = (props) => {
             </Select>
           </Col>
 
+          {/* Approval Status Filter */}
+          <Col xs={24} sm={6} md={6}>
+            <Select
+              value={selectedApprovalStatus}
+              onChange={setSelectedApprovalStatus}
+              style={{
+                width: '100%',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(77, 77, 77, 0.1)',
+                border: '1px solid rgba(77, 77, 77, 0.2)',
+                backgroundColor: '#ffffff'
+              }}
+              placeholder="Select Approval"
+              size="large"
+              dropdownStyle={{
+                borderRadius: '12px',
+                boxShadow: '0 8px 24px rgba(77, 77, 77, 0.15)'
+              }}
+            >
+              <Option value="ALL">All Approvals</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="approved">Approved</Option>
+              <Option value="rejected">Rejected</Option>
+            </Select>
+          </Col>
+
           {/* Date Range Filter */}
           <Col xs={24} sm={6} md={6}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -565,7 +597,7 @@ const FilterOptions = (props) => {
         </Row>
 
         {/* Active Filters Display */}
-        {(searchText || selectedCategory !== 'ALL' || selectedSubcategory !== 'ALL' || selectedStatus !== 'ALL' || selectedDateRange !== 'ALL') && (
+        {(searchText || selectedCategory !== 'ALL' || selectedSubcategory !== 'ALL' || selectedStatus !== 'ALL' || selectedApprovalStatus !== 'ALL' || selectedDateRange !== 'ALL') && (
           <div style={{ 
             marginTop: '24px', 
             padding: '16px',
@@ -652,6 +684,25 @@ const FilterOptions = (props) => {
                   }}
                 >
                   📊 Status: {statuses.find(s => s.id === selectedStatus)?.name || selectedStatus}
+                </Tag>
+              )}
+              {selectedApprovalStatus !== 'ALL' && (
+                <Tag 
+                  closable 
+                  onClose={() => setSelectedApprovalStatus('ALL')}
+                  style={{ 
+                    margin: 0,
+                    borderRadius: '20px',
+                    padding: '6px 12px',
+                    background: '#6B6B6B',
+                    color: '#ffffff',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '13px',
+                    textTransform: 'capitalize'
+                  }}
+                >
+                  Approval: {selectedApprovalStatus}
                 </Tag>
               )}
               {selectedDateRange !== 'ALL' && (
