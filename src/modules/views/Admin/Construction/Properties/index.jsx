@@ -12,7 +12,7 @@ const index = (props) => {
   const [modalTitle, setModalTitle] = useState();
   const [modalWidth, setModalWidth] = useState();
   const [modalContent, setModalContent] = useState("");
-  const [filterUserData, setfilterUserData] = useState('ALL');
+  const [filterUserData, setfilterUserData] = useState('');
   const [loading, setLoading] = useState(false);
   
   let jwt = props?.session?.jwt;
@@ -21,7 +21,7 @@ const index = (props) => {
     url: URL_GET_PROPERTIES,
     jwt: jwt,
     tableKey : "Properties",
-    filter : `?${filterUserData}`
+    filter : filterUserData ? `?${filterUserData}` : ''
   })
 
 

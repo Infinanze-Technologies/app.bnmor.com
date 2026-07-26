@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Popconfirm, Table, Button, Grid } from "antd";
+import { Space, Popconfirm, Table, Button, Grid, Typography } from "antd";
 import ModalComponent from "@/components/ModalComponent";
 import EditEntity from "./EditEntity";
 import { URL_DELETE_ENTITIES } from "@/config/api-paths";
@@ -114,6 +114,16 @@ const EntityTable = (props) => {
           </span>
         );
       }
+    },
+    {
+      title: 'ENTITY ID',
+      dataIndex: 'entity_code',
+      align: "left",
+      render: (text, record) => (
+        <Typography.Text copyable={record?.entity_code ? { text: record.entity_code } : false}>
+          {record?.entity_code || '—'}
+        </Typography.Text>
+      )
     },
     {
       title: 'NAME',

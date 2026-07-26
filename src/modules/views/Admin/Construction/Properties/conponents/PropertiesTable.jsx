@@ -8,9 +8,9 @@ import DeleteProperty from "./DeleteProperty";
 import ViewPropertyFiles from "./ViewPropertyFiles";
 import ViewProperty from "./ViewProperty";
 import AddPropertyImage from "./AddPropertyImage";
-import { URL_DELETE_PROPERTY, URL_PROPERTY_STATUS } from "@/config/api-paths";
+import { URL_DELETE_PROPERTY, URL_PROPERTY_APPROVAL } from "@/config/api-paths";
 import useHandleResponse from "@/hooks/useHandleResponse";
-import { deleteRequest } from "@/hooks/apiService";
+import { deleteRequest, updateRequest } from "@/hooks/apiService";
 import Skeleton from 'react-loading-skeleton'
 import { UserTableStyleWrapper, TableWrapper } from '@/components/TableStyle/table';
 import { AiOutlineMore } from "react-icons/ai";
@@ -217,6 +217,24 @@ const onPageChange = (page, pageSize) => {
       }
     },
     {
+      title: 'Approval',
+      dataIndex: 'approval_status',
+      align: "center",
+      render: (text, record) => {
+        const status = record?.approval_status || 'pending';
+        const colorMap = {
+          pending: 'gold',
+          approved: 'green',
+          rejected: 'red',
+        };
+        return (
+          <Tag color={colorMap[status] || 'default'} style={{ textTransform: 'capitalize' }}>
+            {status}
+          </Tag>
+        );
+      }
+    },
+    {
       title: 'Created Date',
       dataIndex: 'created_at',
       align: "center",
@@ -349,8 +367,23 @@ const onPageChange = (page, pageSize) => {
       });
   };
 
-
-
+  // updateRequest builds `${url}/${id}` — pass `${uuid}/approval` as id
+  const handleApproval = (record, approval_status) => {
+    if (!record?.uuid) return;
+    updateRequest(
+      URL_PROPERTY_APPROVAL,
+      `${record.uuid}/approval`,
+      { approval_status },
+      jwt
+    )
+      .then(async (res) => {
+        handleRequestResponse(res);
+        await forceRefetch();
+      })
+      .catch((err) => {
+        handleRequestError(err);
+      });
+  };
 
   const handleStatusModalCancel = () => {
     setStatusModalVisible(false);
@@ -417,6 +450,35 @@ const onPageChange = (page, pageSize) => {
           setSelectedRecord(record);
           setAddImageModalVisible(true);
         },
+      });
+    }
+
+    if (record?.approval_status !== 'approved') {
+      items.push({
+        key: 'approve',
+        label: 'Approve',
+        onClick: () => handleApproval(record, 'approved'),
+      });
+    }
+
+    if (record?.approval_status !== 'rejected') {
+      items.push({
+        key: 'reject',
+        danger: true,
+        label: (
+          <Popconfirm
+            title="Reject this property?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={(e) => {
+              e?.stopPropagation?.();
+              handleApproval(record, 'rejected');
+            }}
+            onCancel={(e) => e?.stopPropagation?.()}
+          >
+            <span onClick={(e) => e.stopPropagation()}>Reject</span>
+          </Popconfirm>
+        ),
       });
     }
 
