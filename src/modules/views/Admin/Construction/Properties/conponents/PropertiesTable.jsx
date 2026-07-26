@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Space, Popconfirm, Avatar, Spin, Table, Tag, Button, Pagination } from "antd";
+import { Dropdown, Space, Avatar, Spin, Table, Tag, Button, Pagination, Modal } from "antd";
 import ModalComponent from "@/components/ModalComponent";
 import EditProperty from "./EditProperty";
 import EditPropertyStatus from "./EditPropertyStatus";
@@ -385,6 +385,17 @@ const onPageChange = (page, pageSize) => {
       });
   };
 
+  const confirmReject = (record) => {
+    Modal.confirm({
+      title: 'Reject this property?',
+      content: 'This property will be marked as rejected and hidden from public listings.',
+      okText: 'Reject',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: () => handleApproval(record, 'rejected'),
+    });
+  };
+
   const handleStatusModalCancel = () => {
     setStatusModalVisible(false);
     setSelectedRecord(null);
@@ -465,20 +476,8 @@ const onPageChange = (page, pageSize) => {
       items.push({
         key: 'reject',
         danger: true,
-        label: (
-          <Popconfirm
-            title="Reject this property?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={(e) => {
-              e?.stopPropagation?.();
-              handleApproval(record, 'rejected');
-            }}
-            onCancel={(e) => e?.stopPropagation?.()}
-          >
-            <span onClick={(e) => e.stopPropagation()}>Reject</span>
-          </Popconfirm>
-        ),
+        label: 'Reject',
+        onClick: () => confirmReject(record),
       });
     }
 
