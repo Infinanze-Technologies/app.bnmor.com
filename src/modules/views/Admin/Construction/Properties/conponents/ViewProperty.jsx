@@ -112,15 +112,20 @@ const ViewProperty = ({ visible, onCancel, record }) => {
         </Descriptions.Item>
         <Descriptions.Item label="Approval status">
           {(() => {
-            const status = record.approval_status || 'pending';
+            const status = record.approval_status || 'approved';
             const colorMap = {
               pending: 'gold',
               approved: 'green',
               rejected: 'red',
             };
+            const labelMap = {
+              pending: 'Pending',
+              approved: 'Approved',
+              rejected: 'Rejected',
+            };
             return (
-              <Tag color={colorMap[status] || 'default'} style={{ textTransform: 'capitalize' }}>
-                {status}
+              <Tag color={colorMap[status] || 'default'}>
+                {labelMap[status] || status}
               </Tag>
             );
           })()}

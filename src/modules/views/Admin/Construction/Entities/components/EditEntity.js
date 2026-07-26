@@ -54,7 +54,10 @@ const EditEntity = (props) => {
       <Card type="inner" title="Edit Entity" style={{ marginBottom: 24, borderRadius: 8 }}>
         <Row gutter={[16, 0]}>
           <Col span={24} md={24}>
-            <Form.Item label="Entity ID">
+            <Form.Item
+              label="Entity ID"
+              extra="Share this code with the entity so they can post properties."
+            >
               <Input
                 disabled
                 value={record?.entity_code || '—'}

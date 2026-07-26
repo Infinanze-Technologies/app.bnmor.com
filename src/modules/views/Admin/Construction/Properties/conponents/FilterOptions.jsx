@@ -455,7 +455,7 @@ const FilterOptions = (props) => {
                 border: '1px solid rgba(77, 77, 77, 0.2)',
                 backgroundColor: '#ffffff'
               }}
-              placeholder="Select Approval"
+              placeholder="Approval status"
               size="large"
               dropdownStyle={{
                 borderRadius: '12px',

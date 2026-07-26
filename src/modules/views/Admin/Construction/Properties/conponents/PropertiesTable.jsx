@@ -221,15 +221,20 @@ const onPageChange = (page, pageSize) => {
       dataIndex: 'approval_status',
       align: "center",
       render: (text, record) => {
-        const status = record?.approval_status || 'pending';
+        const status = record?.approval_status || 'approved';
         const colorMap = {
           pending: 'gold',
           approved: 'green',
           rejected: 'red',
         };
+        const labelMap = {
+          pending: 'Pending',
+          approved: 'Approved',
+          rejected: 'Rejected',
+        };
         return (
-          <Tag color={colorMap[status] || 'default'} style={{ textTransform: 'capitalize' }}>
-            {status}
+          <Tag color={colorMap[status] || 'default'}>
+            {labelMap[status] || status}
           </Tag>
         );
       }
@@ -385,6 +390,16 @@ const onPageChange = (page, pageSize) => {
       });
   };
 
+  const confirmApprove = (record) => {
+    Modal.confirm({
+      title: 'Approve this property?',
+      content: 'This listing will become visible on the public site.',
+      okText: 'Approve',
+      cancelText: 'Cancel',
+      onOk: () => handleApproval(record, 'approved'),
+    });
+  };
+
   const confirmReject = (record) => {
     Modal.confirm({
       title: 'Reject this property?',
@@ -468,7 +483,7 @@ const onPageChange = (page, pageSize) => {
       items.push({
         key: 'approve',
         label: 'Approve',
-        onClick: () => handleApproval(record, 'approved'),
+        onClick: () => confirmApprove(record),
       });
     }
 
